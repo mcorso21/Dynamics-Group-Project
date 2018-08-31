@@ -8,7 +8,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>Dynamics_Group_4_Project</RootNamespace>
     <AssemblyName>Dynamics Group 4 Project</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -64,6 +64,16 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj">
+      <Project>{24979943-6de9-43d8-999b-e11743b6f8bb}</Project>
+      <Name>DataAccessLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DynamicsPlugins\DynamicsPlugins.csproj">
+      <Project>{c3c28dbd-a3f2-427c-acd1-3aff7effd92e}</Project>
+      <Name>DynamicsPlugins</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
