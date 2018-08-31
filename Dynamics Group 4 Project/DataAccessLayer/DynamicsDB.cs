@@ -10,17 +10,20 @@ using Microsoft.Crm.Sdk.Messages;
 using Microsoft.Xrm.Sdk.Metadata;
 using System.Threading;
 using DataAccessLayer.Models;
+using System.Collections.Generic;
 
 /*
- * Requirements:
- *  1. Apply for Mortgage (Create Mortgage)
- *  2. Make Payments (Update Mortgage Payment Record)
- *  3. Create Case
- *  4. View Cases
- *  5. Create Client
+ * To-Do:
+ *  - How to add documents to sharepoint from console?
+ *  - Make Payments (Update Mortgage Payment Record)            -- Done, but not tested
  *  
- *  revgroup4
- *  revatureGroup4!
+ *  Done:
+ *  - Apply for Mortgage (Create Mortgage)
+ *  - Create Client
+ *  - View Cases
+ *  - Create Case
+ *      - Need to finish attributes
+ *             
  */
 namespace DataAccessLayer
 {
@@ -65,7 +68,7 @@ namespace DataAccessLayer
             }
         }
 
-        public static void CreateMortgage(Guid contactId, MortgageModel mortgageModel)
+        public static void CreateMortgage(MortgageModel mortgageModel)
         {
             try
             {
@@ -77,24 +80,144 @@ namespace DataAccessLayer
 
                 // Create new mortgage
                 Entity newMortgage = new Entity("rev_mortgage");
-                newMortgage.Attributes.Add("rev_approval", $"{mortgageModel.Approval}");
-                newMortgage.Attributes.Add("rev_customerid", $"{contactId}");
-                newMortgage.Attributes.Add("rev_monthlypayment", $"{mortgageModel.MortgagePayment}");
-                newMortgage.Attributes.Add("rev_mortgageamount", $"{mortgageModel.MortgageAmount}");
-                newMortgage.Attributes.Add("rev_mortgagenumber", $"{mortgageModel.MortgageNumber}");
-                newMortgage.Attributes.Add("rev_mortgageterm", $"{mortgageModel.MortgageTermInMonths}");
-                newMortgage.Attributes.Add("rev_region", $"{mortgageModel.Region}");
-                // Create request for contact creation
+                newMortgage.Attributes.Add("rev_customerid", new EntityReference("contact", mortgageModel.ContactId));
+                //newMortgage.Attributes.Add("rev_customerid", mortgageModel.ContactId);
+                newMortgage.Attributes.Add("rev_name", mortgageModel.Name);
+                newMortgage.Attributes.Add("rev_region", new OptionSetValue((int)mortgageModel.Region));
+                newMortgage.Attributes.Add("rev_approval", new OptionSetValue((int)mortgageModel.Approval));
+                newMortgage.Attributes.Add("rev_mortgageamount", new Money(mortgageModel.MortgageAmount));
+                newMortgage.Attributes.Add("rev_mortgageterm", mortgageModel.MortgageTermInMonths);
+                // Create request for mortgage creation
                 CreateRequest request = new CreateRequest();
                 request.Target = newMortgage;
                 // Execute request
                 CreateResponse resp = (CreateResponse)service.Execute(request);
-                Guid contactGuid = (Guid)resp.Results["id"];
+                Guid mortgageGuid = (Guid)resp.Results["id"];
+            }
+            catch (Exception ex)
+            {
+                logger.Info(ex.Message);
+                logger.Info(ex.StackTrace);
+            }
+        }
+
+        public static void CreateCase(MortgageCaseModel mortgageCaseModel)
+        {
+            try
+            {
+                CrmServiceClient client = new CrmServiceClient($"Url={URL}; Username={User}; Password={PW}; authtype=Office365");
+                IOrganizationService service = (IOrganizationService)
+                    ((client.OrganizationWebProxyClient != null)
+                    ? (IOrganizationService)client.OrganizationWebProxyClient
+                    : (IOrganizationService)client.OrganizationServiceProxy);
+
+                // Create new case
+                Entity newCase = new Entity("incident");
+                newCase.Attributes.Add("title", mortgageCaseModel.Title);
+                newCase.Attributes.Add("customerid", new EntityReference("contact", mortgageCaseModel.ContactId));
+                // ... Need to finish the attribute ...
+                // Create request for case creation
+                CreateRequest request = new CreateRequest();
+                request.Target = newCase;
+                // Execute request
+                CreateResponse resp = (CreateResponse)service.Execute(request);
+                Guid incidentGuid = (Guid)resp.Results["id"];
             }
             catch (Exception ex)
             {
                 logger.Info(ex.Message);
             }
+        }
+
+        public static List<MortgageCaseModel> GetCases(Guid ContactId)
+        {
+            List<MortgageCaseModel> cases = new List<MortgageCaseModel>();
+            try
+            {
+                CrmServiceClient client = new CrmServiceClient($"Url={URL}; Username={User}; Password={PW}; authtype=Office365");
+                IOrganizationService service = (IOrganizationService)
+                    ((client.OrganizationWebProxyClient != null)
+                    ? (IOrganizationService)client.OrganizationWebProxyClient
+                    : (IOrganizationService)client.OrganizationServiceProxy);
+
+                using (var context = new OrganizationServiceContext(service))
+                {
+                    var incidents = from incident in context.CreateQuery("incident")
+                                where incident["customerid"].Equals(ContactId)
+                                select new
+                                {
+                                    Title = incident["title"],
+                                    Description = incident["description"],
+                                    Priority = incident["prioritycode"]
+                                    // HighPriorityReason is erroring, likely because the column doesn't exist/is not returned
+                                    // Will ask Satish if there is a solution
+                                    //HighPriorityReason = incident["rev_highpriorityreason"] ?? ""
+                                    // Type?
+                                };
+
+                    foreach (var item in incidents)
+                    {
+                        cases.Add(new MortgageCaseModel()
+                        {
+                            ContactId = ContactId,
+                            Title = item.Title.ToString(),
+                            Description = item.Description.ToString(),
+                            Priority = (PriorityEnum)Enum.Parse(typeof(PriorityEnum), ((OptionSetValue)item.Priority).Value.ToString())
+                            //Type = item.Type.ToString(),
+                            //HighPriorityReason = item.HighPriorityReason.ToString()
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Info(ex.Message);
+            }
+            return cases;
+        }
+
+        public static MortgagePaymentRecordModel GetNextPayment(Guid MortgageId)
+        {
+            MortgagePaymentRecordModel paymentRecord = null;
+            try
+            {
+                CrmServiceClient client = new CrmServiceClient($"Url={URL}; Username={User}; Password={PW}; authtype=Office365");
+                IOrganizationService service = (IOrganizationService)
+                    ((client.OrganizationWebProxyClient != null)
+                    ? (IOrganizationService)client.OrganizationWebProxyClient
+                    : (IOrganizationService)client.OrganizationServiceProxy);
+
+                using (var context = new OrganizationServiceContext(service))
+                {
+                    var payments = from payment in context.CreateQuery("rev_mortgagepaymentrecord")
+                                where payment["rev_mortgageid"].Equals(MortgageId)
+                                orderby payment["rev_duedate"] 
+                                select new
+                                {
+                                    Mortgage = payment["rev_mortgageid"],
+                                    DueDate = payment["rev_duedate"],
+                                    Amount = payment["rev_payment"],
+                                    Status = payment["rev_status"]
+                                };
+
+                    foreach (var item in payments)
+                    {
+                        paymentRecord = new MortgagePaymentRecordModel()
+                        {
+                            MortgageId = (Guid)item.Mortgage,
+                            DueDate = (DateTime)item.DueDate,
+                            Amount = ((Money)item.Amount).Value,
+                            PaymentStatus = (PaymentStatusEnum)Enum.Parse(typeof(PaymentStatusEnum), item.Status.ToString())
+                        };
+                        break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Info(ex.Message);
+            }
+            return paymentRecord;
         }
     }
 }

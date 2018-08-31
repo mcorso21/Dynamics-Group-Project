@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DynamicsDB.cs" />
+    <Compile Include="Models\MortgagePaymentRecordModel.cs" />
     <Compile Include="Models\MortgageCreditCheck.cs" />
     <Compile Include="Models\MortgageBaseApr.cs" />
     <Compile Include="Models\MortgageCaseModel.cs" />
