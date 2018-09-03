@@ -11,6 +11,7 @@ using Microsoft.Xrm.Sdk.Metadata;
 using System.Threading;
 using DataAccessLayer.Models;
 using System.Collections.Generic;
+using System.Net;
 
 /*
  * To-Do:
@@ -40,10 +41,12 @@ namespace DataAccessLayer
             PW = "revatureGroup4!";
         }
 
-        public static void CreateContact(string firstname, string lastname, string ssn)
+        public static Guid CreateContact(string firstname, string lastname, string ssn)
         {
+            Guid contactGuid = Guid.Empty;
             try
             {
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                 CrmServiceClient client = new CrmServiceClient($"Url={URL}; Username={User}; Password={PW}; authtype=Office365");
                 IOrganizationService service = (IOrganizationService)
                     ((client.OrganizationWebProxyClient != null)
@@ -60,12 +63,14 @@ namespace DataAccessLayer
                 request.Target = newContact;
                 // Execute request
                 CreateResponse resp = (CreateResponse)service.Execute(request);
-                Guid contactGuid = (Guid)resp.Results["id"];
+                contactGuid = (Guid)resp.Results["id"];
             }
             catch(Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine($@"CreateContact failed: {ex.Message}\n{ex.StackTrace}");
                 logger.Info(ex.Message);
             }
+            return contactGuid;
         }
 
         public static void CreateMortgage(MortgageModel mortgageModel)

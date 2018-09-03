@@ -1,0 +1,42 @@
+﻿@model DataAccessLayer.Models.UserMapModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>UserMapModel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.UserWebAppId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserWebAppId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ClientDynamicsId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ClientDynamicsId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserDynamicsId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserDynamicsId)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

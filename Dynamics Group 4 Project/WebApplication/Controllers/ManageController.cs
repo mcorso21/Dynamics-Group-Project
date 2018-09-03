@@ -64,6 +64,8 @@ namespace WebApplication.Controllers
                 : "";
 
             var userId = User.Identity.GetUserId();
+            string firstName = String.Empty;
+            string lastName = String.Empty;
             var model = new IndexViewModel
             {
                 HasPassword = HasPassword(),

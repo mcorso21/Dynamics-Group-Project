@@ -29,5 +29,7 @@ namespace WebApplication.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<DataAccessLayer.Models.UserMapModel> UserMapModels { get; set; }
     }
 }

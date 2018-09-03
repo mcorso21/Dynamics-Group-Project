@@ -9,12 +9,14 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using WebApplication.Models;
+using DataAccessLayer.Models;
 
 namespace WebApplication.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();     //logger.Info(e.Message);
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -151,17 +153,47 @@ namespace WebApplication.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email};
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+                    try
+                    {
+                        Guid clientDynamicsId = DataAccessLayer.DynamicsDB.CreateContact(model.FirstName.ToString(), model.LastName.ToString(), model.SSN.ToString());
+                        using (var context = new ApplicationDbContext())
+                        {
+                            Guid id = Guid.NewGuid();
+                            Guid userWebAppId = new Guid((from u in context.Users where u.UserName == model.Email select u.Id).First());
+
+                            UserMapModel userMapModel = new UserMapModel
+                            {
+                                Id = id,
+                                UserWebAppId = userWebAppId,
+                                ClientDynamicsId = clientDynamicsId,
+                                UserDynamicsId = Guid.Empty,
+                                FirstName = model.FirstName,
+                                LastName = model.LastName,
+                                SSN = model.SSN
+                            };
+
+                            context.UserMapModels.Add(userMapModel);
+                            context.SaveChanges();
+                        }
+                    }
+                    catch(Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"\n\nGUID={User.Identity.GetUserId()}\n\n");
+                        System.Diagnostics.Debug.WriteLine($"{ex.Message}\n{ex.StackTrace}");
+                    }
+
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+
 
                     return RedirectToAction("Index", "Home");
                 }

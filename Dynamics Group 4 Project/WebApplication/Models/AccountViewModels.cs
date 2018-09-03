@@ -65,6 +65,24 @@ namespace WebApplication.Models
     public class RegisterViewModel
     {
         [Required]
+        [DataType(DataType.Text)]
+        [StringLength(30, ErrorMessage = "The {0} must be {1} to {2} characters long.", MinimumLength = 1)]
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [DataType(DataType.Text)]
+        [StringLength(30, ErrorMessage = "The {0} must be {1} to {2} characters long.", MinimumLength = 1)]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+
+        [Required]
+        [DataType(DataType.Text)]
+        [RegularExpression("^\\d{3}[- ]?\\d{2}[- ]?\\d{4}$", ErrorMessage = "Social Security Number is improperly formatted.")]
+        [Display(Name = "Social Security Number")]
+        public string SSN { get; set; }
+
+        [Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }

@@ -13,7 +13,7 @@ namespace Dynamics_Group_4_Project
         static void Main(string[] args)
         {
             // Create Contact
-            //DynamicsDB.CreateContact("Test Contact", "1", "123-45-6789");
+            //DataAccessLayer.DynamicsDB.CreateContact("WebApp", "Contact2", "123-45-6789");
 
             // Create Mortgage
             //MortgageModel mortgageModel = new MortgageModel()
@@ -38,12 +38,12 @@ namespace Dynamics_Group_4_Project
             //DynamicsDB.CreateCase(caseModel);
 
             // Get Cases
-            var cases = DynamicsDB.GetCases(new Guid("97D8FA4E-5DAD-E811-A96A-000D3A1CA939"));
-            foreach (MortgageCaseModel c in cases)
-            {
-                Console.WriteLine($@"title={c.Title} Desc={c.Description} Prio={c.Priority}");
-            }
-            Console.ReadLine();
+            //var cases = DynamicsDB.GetCases(new Guid("97D8FA4E-5DAD-E811-A96A-000D3A1CA939"));
+            //foreach (MortgageCaseModel c in cases)
+            //{
+            //    Console.WriteLine($@"title={c.Title} Desc={c.Description} Prio={c.Priority}");
+            //}
+            //Console.ReadLine();
         }
     }
 }
