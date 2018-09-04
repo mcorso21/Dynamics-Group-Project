@@ -29,16 +29,19 @@ namespace Dynamics_Group_4_Project
             //DynamicsDB.CreateMortgage(mortgageModel);
 
             // Create Case
-            //MortgageCaseModel caseModel = new MortgageCaseModel()
-            //{
-            //    ContactId = new Guid("97D8FA4E-5DAD-E811-A96A-000D3A1CA939"),
-            //    Title = "Web App Test Title"
-            //};
+            MortgageCaseModel caseModel = new MortgageCaseModel()
+            {
+                ContactId = new Guid("05dab347-58b0-e811-a96d-000d3a1ca7d6"),
+                Title = "Web App Test Title",
+                Description = "Test Description",
+                Type = TypeEnum.Mortgage,
+                Priority = PriorityEnum.High
+            };
 
-            //DynamicsDB.CreateCase(caseModel);
+            DynamicsDB.CreateCase(caseModel);
 
             // Get Cases
-            //var cases = DynamicsDB.GetCases(new Guid("97D8FA4E-5DAD-E811-A96A-000D3A1CA939"));
+            //var cases = DynamicsDB.GetCases(new Guid("05dab347-58b0-e811-a96d-000d3a1ca7d6"));
             //foreach (MortgageCaseModel c in cases)
             //{
             //    Console.WriteLine($@"title={c.Title} Desc={c.Description} Prio={c.Priority}");

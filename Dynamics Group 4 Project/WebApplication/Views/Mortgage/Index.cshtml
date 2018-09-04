@@ -1,0 +1,120 @@
+﻿@model WebApplication.Controllers.MortgageIndexModel
+
+@{
+
+}
+
+<h2>@ViewBag.Title</h2>
+
+<!-- General User Info -->
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </th>
+        <td>
+            @Html.DisplayFor(model => model.FirstName)
+        </td>
+    </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.LastName)
+        </th>
+        <td>
+            @Html.DisplayFor(model => model.LastName)
+        </td>
+    </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.WebAppId)
+        </th>
+        <td>
+            @Html.DisplayFor(model => model.WebAppId)
+        </td>
+    </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.DynamicsId)
+        </th>
+        <td>
+            @Html.DisplayFor(model => model.DynamicsId)
+        </td>
+    </tr>
+</table>
+<!-- Cases -->
+<div>
+    <hr />
+    <h3>Cases - @Html.ActionLink("Create Case", "CreateCase", "Mortgage", new { }, null)</h3>
+    <!--linkText, actionName, controllerName, routeValues, htmlAttributes-->
+    <hr />
+</div>
+<table class="table">
+    <tr>
+        <th> Title </th>
+        <th> Description </th>
+        <th> Priority </th>
+        <th> HighPriorityReason </th>
+        <th> Type </th>
+    </tr>
+    @foreach (var c in Model.Cases)
+    {
+        <tr>
+            <th> @c.Title </th>
+            <td> @c.Description </td>
+            <td> @c.Priority </td>
+            <td> @c.HighPriorityReason </td>
+            <td> @c.Type </td>
+        </tr>
+    }
+</table>
+<!-- Mortgages -->
+<div>
+    <hr />
+    <h3>Mortgages - @Html.ActionLink("Apply for Mortgage", "CreateMortgage", "Mortgage", new { }, null)</h3>
+    <!--linkText, actionName, controllerName, routeValues, htmlAttributes-->
+    <hr />
+</div>
+<table class="table">
+    <tr>
+        <th> Title </th>
+        <th> Description </th>
+        <th> Priority </th>
+        <th> HighPriorityReason </th>
+        <th> Type </th>
+    </tr>
+    @foreach (var m in Model.Mortgages)
+    {
+        <tr>
+            <th> @m.Name </th>
+            <td> @m.Region </td>
+            <td> @m.Approval </td>
+            <td> $@m.MortgageAmount </td>
+            <td> @m.MortgageTermInMonths months </td>
+        </tr>
+    }
+</table>
+<!-- Payments -->
+<div>
+    <hr />
+    <h3>Payments</h3>
+    <!--linkText, actionName, controllerName, routeValues, htmlAttributes-->
+    <hr />
+</div>
+<table class="table">
+    <tr>
+        <th> Mortgage </th>
+        <th> Amount </th>
+        <th> Due Date </th>
+        <th> Status </th>
+    </tr>
+    @*@foreach (var m in Model.Mortgages)
+    {
+        <tr>
+            <th> @m.Name </th>
+            <td> @m.Region </td>
+            <td> @m.Approval </td>
+            <td> $@m.MortgageAmount </td>
+            <td> @m.MortgageTermInMonths months </td>
+        </tr>
+    }*@
+</table>

@@ -160,11 +160,11 @@ namespace WebApplication.Controllers
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     try
                     {
-                        Guid clientDynamicsId = DataAccessLayer.DynamicsDB.CreateContact(model.FirstName.ToString(), model.LastName.ToString(), model.SSN.ToString());
                         using (var context = new ApplicationDbContext())
                         {
                             Guid id = Guid.NewGuid();
                             Guid userWebAppId = new Guid((from u in context.Users where u.UserName == model.Email select u.Id).First());
+                            Guid clientDynamicsId = DataAccessLayer.DynamicsDB.CreateContact(model.FirstName.ToString(), model.LastName.ToString(), model.SSN.ToString());
 
                             UserMapModel userMapModel = new UserMapModel
                             {

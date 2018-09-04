@@ -234,7 +234,7 @@
     <Compile Include="Controllers\APIs\MortgageAprController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\Mortgage\UserMapModelsController.cs" />
+    <Compile Include="Controllers\MortgageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -354,11 +354,6 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\UserMapModels\Create.cshtml" />
-    <Content Include="Views\UserMapModels\Delete.cshtml" />
-    <Content Include="Views\UserMapModels\Details.cshtml" />
-    <Content Include="Views\UserMapModels\Edit.cshtml" />
-    <Content Include="Views\UserMapModels\Index.cshtml" />
     <Content Include="Views\Manage\Index.cshtml" />
     <Content Include="Scripts\umd\popper.min.js.map" />
     <Content Include="Scripts\umd\popper.js.map" />
@@ -369,6 +364,12 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\Mortgage\Create.cshtml" />
+    <Content Include="Views\Mortgage\Delete.cshtml" />
+    <Content Include="Views\Mortgage\Details.cshtml" />
+    <Content Include="Views\Mortgage\Edit.cshtml" />
+    <Content Include="Views\Mortgage\Index.cshtml" />
+    <Content Include="Views\Mortgage\Index - Copy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

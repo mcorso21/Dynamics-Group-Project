@@ -8,20 +8,57 @@ using System.Web;
 using System.Web.Mvc;
 using DataAccessLayer.Models;
 using WebApplication.Models;
+using Microsoft.AspNet.Identity;
 
-namespace WebApplication.Controllers.Mortgage
+namespace WebApplication.Controllers
 {
-    public class UserMapModelsController : Controller
+    public class MortgageIndexModel
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string DynamicsId { get; set; }
+        public string WebAppId { get; set; }
+        public List<MortgageModel> Mortgages { get; set; }
+        public List<MortgageCaseModel> Cases { get; set; }
+        public List<MortgagePaymentRecordModel> Payments { get; set; }
+    }
+
+    [Authorize]
+    public class MortgageController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: UserMapModels
+        // GET: User
         public ActionResult Index()
         {
-            return View(db.UserMapModels.ToList());
+            //return View(db.UserMapModels.ToList());
+            MortgageIndexModel mortgageIndexModel = new MortgageIndexModel();
+            try
+            {
+                using (var context = new ApplicationDbContext())
+                {
+                    Guid userId = new Guid(User.Identity.GetUserId());
+                    var user = (from u in context.UserMapModels
+                                where u.UserWebAppId == userId
+                                select u).ToList()[0];
+
+                    mortgageIndexModel.FirstName =  user.FirstName;
+                    mortgageIndexModel.LastName =   user.LastName;
+                    mortgageIndexModel.DynamicsId = user.ClientDynamicsId.ToString();
+                    mortgageIndexModel.WebAppId =   user.UserWebAppId.ToString();
+                    mortgageIndexModel.Cases = DataAccessLayer.DynamicsDB.GetCases(user.ClientDynamicsId);
+                    mortgageIndexModel.Mortgages = DataAccessLayer.DynamicsDB.GetMortgages(user.ClientDynamicsId);
+                }
+            }
+            catch(Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"MortgageController Index threw: {ex.Message}\n{ex.StackTrace}");
+            }
+            ViewBag.Title = $"{User.Identity.Name}";
+            return View(mortgageIndexModel);
         }
 
-        // GET: UserMapModels/Details/5
+        // GET: User/Details/5
         public ActionResult Details(Guid? id)
         {
             if (id == null)
@@ -36,18 +73,18 @@ namespace WebApplication.Controllers.Mortgage
             return View(userMapModel);
         }
 
-        // GET: UserMapModels/Create
+        // GET: User/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: UserMapModels/Create
+        // POST: User/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,UserWebAppId,ClientDynamicsId,UserDynamicsId")] UserMapModel userMapModel)
+        public ActionResult Create([Bind(Include = "Id,UserWebAppId,ClientDynamicsId,UserDynamicsId,FirstName,LastName,SSN")] UserMapModel userMapModel)
         {
             if (ModelState.IsValid)
             {
@@ -60,7 +97,7 @@ namespace WebApplication.Controllers.Mortgage
             return View(userMapModel);
         }
 
-        // GET: UserMapModels/Edit/5
+        // GET: User/Edit/5
         public ActionResult Edit(Guid? id)
         {
             if (id == null)
@@ -75,12 +112,12 @@ namespace WebApplication.Controllers.Mortgage
             return View(userMapModel);
         }
 
-        // POST: UserMapModels/Edit/5
+        // POST: User/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,UserWebAppId,ClientDynamicsId,UserDynamicsId")] UserMapModel userMapModel)
+        public ActionResult Edit([Bind(Include = "Id,UserWebAppId,ClientDynamicsId,UserDynamicsId,FirstName,LastName,SSN")] UserMapModel userMapModel)
         {
             if (ModelState.IsValid)
             {
@@ -91,7 +128,7 @@ namespace WebApplication.Controllers.Mortgage
             return View(userMapModel);
         }
 
-        // GET: UserMapModels/Delete/5
+        // GET: User/Delete/5
         public ActionResult Delete(Guid? id)
         {
             if (id == null)
@@ -106,7 +143,7 @@ namespace WebApplication.Controllers.Mortgage
             return View(userMapModel);
         }
 
-        // POST: UserMapModels/Delete/5
+        // POST: User/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(Guid id)

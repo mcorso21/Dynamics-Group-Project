@@ -32,13 +32,20 @@ namespace DataAccessLayer
     {
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();     //logger.Info(e.Message);
 
-        private static string URL, User, PW;
+        private static CrmServiceClient client;
+        private static IOrganizationService service;
 
         static DynamicsDB()
         {
-            URL = "https://revature4.crm.dynamics.com/";
-            User = "mike@revature4.onmicrosoft.com";
-            PW = "revatureGroup4!";
+            string URL = "https://revature4.crm.dynamics.com/";
+            string User = "mike@revature4.onmicrosoft.com";
+            string PW = "revatureGroup4!";
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            client = new CrmServiceClient($"Url={URL}; Username={User}; Password={PW}; authtype=Office365");
+            service = (IOrganizationService)
+                ((client.OrganizationWebProxyClient != null)
+                ? (IOrganizationService)client.OrganizationWebProxyClient
+                : (IOrganizationService)client.OrganizationServiceProxy);
         }
 
         public static Guid CreateContact(string firstname, string lastname, string ssn)
@@ -46,13 +53,6 @@ namespace DataAccessLayer
             Guid contactGuid = Guid.Empty;
             try
             {
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-                CrmServiceClient client = new CrmServiceClient($"Url={URL}; Username={User}; Password={PW}; authtype=Office365");
-                IOrganizationService service = (IOrganizationService)
-                    ((client.OrganizationWebProxyClient != null)
-                    ? (IOrganizationService)client.OrganizationWebProxyClient
-                    : (IOrganizationService)client.OrganizationServiceProxy);
-
                 // Create new contact
                 Entity newContact = new Entity("contact");
                 newContact.Attributes.Add("firstname", $"{firstname}");
@@ -77,11 +77,6 @@ namespace DataAccessLayer
         {
             try
             {
-                CrmServiceClient client = new CrmServiceClient($"Url={URL}; Username={User}; Password={PW}; authtype=Office365");
-                IOrganizationService service = (IOrganizationService)
-                    ((client.OrganizationWebProxyClient != null)
-                    ? (IOrganizationService)client.OrganizationWebProxyClient
-                    : (IOrganizationService)client.OrganizationServiceProxy);
 
                 // Create new mortgage
                 Entity newMortgage = new Entity("rev_mortgage");
@@ -110,17 +105,14 @@ namespace DataAccessLayer
         {
             try
             {
-                CrmServiceClient client = new CrmServiceClient($"Url={URL}; Username={User}; Password={PW}; authtype=Office365");
-                IOrganizationService service = (IOrganizationService)
-                    ((client.OrganizationWebProxyClient != null)
-                    ? (IOrganizationService)client.OrganizationWebProxyClient
-                    : (IOrganizationService)client.OrganizationServiceProxy);
-
                 // Create new case
                 Entity newCase = new Entity("incident");
-                newCase.Attributes.Add("title", mortgageCaseModel.Title);
                 newCase.Attributes.Add("customerid", new EntityReference("contact", mortgageCaseModel.ContactId));
-                // ... Need to finish the attribute ...
+                newCase.Attributes.Add("title", mortgageCaseModel.Title);
+                newCase.Attributes.Add("description", mortgageCaseModel.Description);
+                newCase.Attributes.Add("prioritycode", new OptionSetValue((int)mortgageCaseModel.Priority));
+                newCase.Attributes.Add("rev_highpriorityreason", mortgageCaseModel.HighPriorityReason);
+                newCase.Attributes.Add("rev_type", new OptionSetValue((int)mortgageCaseModel.Type));
                 // Create request for case creation
                 CreateRequest request = new CreateRequest();
                 request.Target = newCase;
@@ -134,42 +126,68 @@ namespace DataAccessLayer
             }
         }
 
+        public static List<MortgageModel> GetMortgages(Guid ContactId)
+        {
+            List<MortgageModel> mortgages = new List<MortgageModel>();
+            try
+            {
+                using (var context = new OrganizationServiceContext(service))
+                {
+                    var ms = from m in context.CreateQuery("rev_mortgage")
+                             where m["rev_customerid"].Equals(ContactId)
+                             select m;
+
+                    foreach (var item in ms)
+                    {
+                        mortgages.Add(new MortgageModel()
+                        {
+                            Name = (item.Contains("rev_name")) ? item["rev_name"].ToString() : "N/A",
+                            Region = (item.Contains("rev_region"))
+                                ? (RegionEnum)Enum.Parse(typeof(RegionEnum), ((OptionSetValue)item["rev_region"]).Value.ToString())
+                                : RegionEnum.US,
+                            Approval = (item.Contains("rev_approval"))
+                                ? (ApprovalEnum)Enum.Parse(typeof(ApprovalEnum), ((OptionSetValue)item["rev_approval"]).Value.ToString())
+                                : ApprovalEnum.Review,
+                            MortgageAmount = (item.Contains("rev_mortgageamount"))
+                                ? ((Money)item["rev_mortgageamount"]).Value : 0,
+                            MortgageTermInMonths = (item.Contains("rev_mortgageterm"))
+                                ? int.Parse(item["rev_mortgageterm"].ToString()) : 0
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Info(ex.Message);
+            }
+            return mortgages;
+        }
+
         public static List<MortgageCaseModel> GetCases(Guid ContactId)
         {
             List<MortgageCaseModel> cases = new List<MortgageCaseModel>();
             try
             {
-                CrmServiceClient client = new CrmServiceClient($"Url={URL}; Username={User}; Password={PW}; authtype=Office365");
-                IOrganizationService service = (IOrganizationService)
-                    ((client.OrganizationWebProxyClient != null)
-                    ? (IOrganizationService)client.OrganizationWebProxyClient
-                    : (IOrganizationService)client.OrganizationServiceProxy);
-
                 using (var context = new OrganizationServiceContext(service))
                 {
                     var incidents = from incident in context.CreateQuery("incident")
-                                where incident["customerid"].Equals(ContactId)
-                                select new
-                                {
-                                    Title = incident["title"],
-                                    Description = incident["description"],
-                                    Priority = incident["prioritycode"]
-                                    // HighPriorityReason is erroring, likely because the column doesn't exist/is not returned
-                                    // Will ask Satish if there is a solution
-                                    //HighPriorityReason = incident["rev_highpriorityreason"] ?? ""
-                                    // Type?
-                                };
+                                    where incident["customerid"].Equals(ContactId)
+                                    select incident;
 
                     foreach (var item in incidents)
                     {
                         cases.Add(new MortgageCaseModel()
                         {
-                            ContactId = ContactId,
-                            Title = item.Title.ToString(),
-                            Description = item.Description.ToString(),
-                            Priority = (PriorityEnum)Enum.Parse(typeof(PriorityEnum), ((OptionSetValue)item.Priority).Value.ToString())
-                            //Type = item.Type.ToString(),
-                            //HighPriorityReason = item.HighPriorityReason.ToString()
+                            Title = (item.Contains("title")) ? item["title"].ToString() : "N/A",
+                            Description = (item.Contains("description")) ? item["description"].ToString() : "N/A",
+                            Priority = (item.Contains("prioritycode")) 
+                                ? (PriorityEnum)Enum.Parse(typeof(PriorityEnum), ((OptionSetValue)item["prioritycode"]).Value.ToString()) 
+                                : PriorityEnum.Normal,
+                            HighPriorityReason = (item.Contains("rev_highpriorityreason")) 
+                                ? item["rev_highpriorityreason"].ToString() : "N/A",
+                            Type = (item.Contains("rev_type"))
+                                ? (TypeEnum)Enum.Parse(typeof(TypeEnum), ((OptionSetValue)item["rev_type"]).Value.ToString())
+                                : TypeEnum.Other
                         });
                     }
                 }
@@ -186,11 +204,6 @@ namespace DataAccessLayer
             MortgagePaymentRecordModel paymentRecord = null;
             try
             {
-                CrmServiceClient client = new CrmServiceClient($"Url={URL}; Username={User}; Password={PW}; authtype=Office365");
-                IOrganizationService service = (IOrganizationService)
-                    ((client.OrganizationWebProxyClient != null)
-                    ? (IOrganizationService)client.OrganizationWebProxyClient
-                    : (IOrganizationService)client.OrganizationServiceProxy);
 
                 using (var context = new OrganizationServiceContext(service))
                 {
