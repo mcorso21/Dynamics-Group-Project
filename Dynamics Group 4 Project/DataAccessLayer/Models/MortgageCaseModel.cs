@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -13,11 +14,21 @@ namespace DataAccessLayer.Models
 
     public class MortgageCaseModel
     {
+        [Required]
+        [Display(Name = "Title")]
         public string Title { get; set; }
+        [Display(Name = "Dynamics Contact ID")]
         public Guid ContactId { get; set; }
+        [Required]
+        [Display(Name = "Description")]
         public string Description { get; set; }
+        [Range(1, int.MaxValue, ErrorMessage = "Select a Priority.")]
+        [Display(Name = "Priority")]
         public PriorityEnum Priority { get; set; }
+        [Display(Name = "High Priority Reason")]
         public string HighPriorityReason { get; set; }
+        [Range(283210000, 283210010, ErrorMessage = "Select a Type.")]
+        [Display(Name = "Type")]
         public TypeEnum Type { get; set; }
     }
 }

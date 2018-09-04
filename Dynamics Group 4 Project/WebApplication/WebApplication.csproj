@@ -264,6 +264,9 @@
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\CustomCSS-NewMortgage.css" />
+    <Content Include="Content\CustomCSS-CreateCase.css" />
+    <Content Include="Content\CustomCSS-Register.css" />
     <Content Include="Content\CustomCSS.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -289,6 +292,9 @@
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\CustomJS-NewMortgage.js" />
+    <Content Include="Scripts\CustomJS-Register.js" />
+    <Content Include="Scripts\CustomJS-CreateCase.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
     <Content Include="Scripts\esm\popper.js" />
@@ -364,12 +370,14 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
-    <Content Include="Views\Mortgage\Create.cshtml" />
+    <Content Include="Views\Mortgage\CreateCase.cshtml" />
     <Content Include="Views\Mortgage\Delete.cshtml" />
     <Content Include="Views\Mortgage\Details.cshtml" />
     <Content Include="Views\Mortgage\Edit.cshtml" />
     <Content Include="Views\Mortgage\Index.cshtml" />
     <Content Include="Views\Mortgage\Index - Copy.cshtml" />
+    <Content Include="Views\Mortgage\Create - Copy.cshtml" />
+    <Content Include="Views\Mortgage\NewMortgage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

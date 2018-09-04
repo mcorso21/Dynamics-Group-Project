@@ -32,10 +32,11 @@ namespace Dynamics_Group_4_Project
             MortgageCaseModel caseModel = new MortgageCaseModel()
             {
                 ContactId = new Guid("05dab347-58b0-e811-a96d-000d3a1ca7d6"),
-                Title = "Web App Test Title",
+                Title = "Web App Test Title #2",
                 Description = "Test Description",
                 Type = TypeEnum.Mortgage,
-                Priority = PriorityEnum.High
+                Priority = PriorityEnum.High,
+                HighPriorityReason = "High priorirty reaso nand stuff "
             };
 
             DynamicsDB.CreateCase(caseModel);

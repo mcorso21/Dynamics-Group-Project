@@ -58,23 +58,8 @@ namespace WebApplication.Controllers
             return View(mortgageIndexModel);
         }
 
-        // GET: User/Details/5
-        public ActionResult Details(Guid? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            UserMapModel userMapModel = db.UserMapModels.Find(id);
-            if (userMapModel == null)
-            {
-                return HttpNotFound();
-            }
-            return View(userMapModel);
-        }
-
         // GET: User/Create
-        public ActionResult Create()
+        public ActionResult CreateCase()
         {
             return View();
         }
@@ -84,83 +69,132 @@ namespace WebApplication.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,UserWebAppId,ClientDynamicsId,UserDynamicsId,FirstName,LastName,SSN")] UserMapModel userMapModel)
+        public ActionResult CreateCase([Bind(Include = "Title,Description,Priority,HighPriorityReason,Type")] MortgageCaseModel caseModel)
         {
             if (ModelState.IsValid)
             {
-                userMapModel.Id = Guid.NewGuid();
-                db.UserMapModels.Add(userMapModel);
-                db.SaveChanges();
+                using (var context = new ApplicationDbContext())
+                {
+                    Guid userId = new Guid(User.Identity.GetUserId());
+                    caseModel.ContactId = (from u in context.UserMapModels
+                                           where u.UserWebAppId == userId
+                                           select u).ToList()[0].ClientDynamicsId;
+                }
+                DataAccessLayer.DynamicsDB.CreateCase(caseModel);
                 return RedirectToAction("Index");
             }
 
-            return View(userMapModel);
+            return View(caseModel);
         }
 
-        // GET: User/Edit/5
-        public ActionResult Edit(Guid? id)
+        // GET: User/Create
+        public ActionResult NewMortgage()
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            UserMapModel userMapModel = db.UserMapModels.Find(id);
-            if (userMapModel == null)
-            {
-                return HttpNotFound();
-            }
-            return View(userMapModel);
+            return View();
         }
 
-        // POST: User/Edit/5
+        // POST: User/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,UserWebAppId,ClientDynamicsId,UserDynamicsId,FirstName,LastName,SSN")] UserMapModel userMapModel)
+        public ActionResult NewMortgage([Bind(Include = "Name,Region,MortgageAmount,MortgageTermInMonths,IdentityDocuments")] MortgageModel mortgageModel)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(userMapModel).State = EntityState.Modified;
-                db.SaveChanges();
+                using (var context = new ApplicationDbContext())
+                {
+                    Guid userId = new Guid(User.Identity.GetUserId());
+                    mortgageModel.ContactId = (from u in context.UserMapModels
+                                               where u.UserWebAppId == userId
+                                               select u).ToList()[0].ClientDynamicsId;
+                }
+                DataAccessLayer.DynamicsDB.CreateMortgage(mortgageModel);
                 return RedirectToAction("Index");
             }
-            return View(userMapModel);
+
+            return View(mortgageModel);
         }
 
-        // GET: User/Delete/5
-        public ActionResult Delete(Guid? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            UserMapModel userMapModel = db.UserMapModels.Find(id);
-            if (userMapModel == null)
-            {
-                return HttpNotFound();
-            }
-            return View(userMapModel);
-        }
+        //// GET: User/Details/5
+        //public ActionResult Details(Guid? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    UserMapModel userMapModel = db.UserMapModels.Find(id);
+        //    if (userMapModel == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(userMapModel);
+        //}
 
-        // POST: User/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(Guid id)
-        {
-            UserMapModel userMapModel = db.UserMapModels.Find(id);
-            db.UserMapModels.Remove(userMapModel);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+        //// GET: User/Edit/5
+        //public ActionResult Edit(Guid? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    UserMapModel userMapModel = db.UserMapModels.Find(id);
+        //    if (userMapModel == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(userMapModel);
+        //}
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+        //// POST: User/Edit/5
+        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        //// more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Edit([Bind(Include = "Id,UserWebAppId,ClientDynamicsId,UserDynamicsId,FirstName,LastName,SSN")] UserMapModel userMapModel)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        db.Entry(userMapModel).State = EntityState.Modified;
+        //        db.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
+        //    return View(userMapModel);
+        //}
+
+        //// GET: User/Delete/5
+        //public ActionResult Delete(Guid? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    UserMapModel userMapModel = db.UserMapModels.Find(id);
+        //    if (userMapModel == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(userMapModel);
+        //}
+
+        //// POST: User/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult DeleteConfirmed(Guid id)
+        //{
+        //    UserMapModel userMapModel = db.UserMapModels.Find(id);
+        //    db.UserMapModels.Remove(userMapModel);
+        //    db.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
+
+        //protected override void Dispose(bool disposing)
+        //{
+        //    if (disposing)
+        //    {
+        //        db.Dispose();
+        //    }
+        //    base.Dispose(disposing);
+        //}
     }
 }

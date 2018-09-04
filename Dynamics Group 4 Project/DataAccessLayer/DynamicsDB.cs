@@ -151,7 +151,8 @@ namespace DataAccessLayer
                             MortgageAmount = (item.Contains("rev_mortgageamount"))
                                 ? ((Money)item["rev_mortgageamount"]).Value : 0,
                             MortgageTermInMonths = (item.Contains("rev_mortgageterm"))
-                                ? int.Parse(item["rev_mortgageterm"].ToString()) : 0
+                                ? int.Parse(item["rev_mortgageterm"].ToString()) : 0,
+                            MortgageNumber = (item.Contains("rev_mortgagenumber")) ? item["rev_mortgagenumber"].ToString() : "N/A",
                         });
                     }
                 }

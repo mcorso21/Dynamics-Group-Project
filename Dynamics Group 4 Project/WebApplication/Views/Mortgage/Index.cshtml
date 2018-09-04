@@ -53,7 +53,7 @@
         <th> Title </th>
         <th> Description </th>
         <th> Priority </th>
-        <th> HighPriorityReason </th>
+        <th> High Priority Reason </th>
         <th> Type </th>
     </tr>
     @foreach (var c in Model.Cases)
@@ -70,27 +70,29 @@
 <!-- Mortgages -->
 <div>
     <hr />
-    <h3>Mortgages - @Html.ActionLink("Apply for Mortgage", "CreateMortgage", "Mortgage", new { }, null)</h3>
+    <h3>Mortgages - @Html.ActionLink("Apply for Mortgage", "NewMortgage", "Mortgage", new { }, null)</h3>
     <!--linkText, actionName, controllerName, routeValues, htmlAttributes-->
     <hr />
 </div>
 <table class="table">
     <tr>
-        <th> Title </th>
-        <th> Description </th>
-        <th> Priority </th>
-        <th> HighPriorityReason </th>
-        <th> Type </th>
+        <th> Number </th>
+        <th> Name </th>
+        <th> Region </th>
+        <th> Amount </th>
+        <th> Term (Months) </th>
+        <th> Status </th>
     </tr>
     @foreach (var m in Model.Mortgages)
     {
-        <tr>
-            <th> @m.Name </th>
-            <td> @m.Region </td>
-            <td> @m.Approval </td>
-            <td> $@m.MortgageAmount </td>
-            <td> @m.MortgageTermInMonths months </td>
-        </tr>
+    <tr>
+        <td> @m.MortgageNumber </td>
+        <td> @m.Name </td>
+        <td> @m.Region </td>
+        <td> $@m.MortgageAmount </td>
+        <td> @m.MortgageTermInMonths </td>
+        <td> @m.Approval </td>
+    </tr>
     }
 </table>
 <!-- Payments -->
@@ -108,13 +110,13 @@
         <th> Status </th>
     </tr>
     @*@foreach (var m in Model.Mortgages)
-    {
-        <tr>
-            <th> @m.Name </th>
-            <td> @m.Region </td>
-            <td> @m.Approval </td>
-            <td> $@m.MortgageAmount </td>
-            <td> @m.MortgageTermInMonths months </td>
-        </tr>
-    }*@
+        {
+            <tr>
+                <th> @m.Name </th>
+                <td> @m.Region </td>
+                <td> @m.Approval </td>
+                <td> $@m.MortgageAmount </td>
+                <td> @m.MortgageTermInMonths months </td>
+            </tr>
+        }*@
 </table>
