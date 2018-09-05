@@ -17,6 +17,7 @@ namespace DataAccessLayer.Models
     public class MortgageModel
     {
         public Guid ContactId { get; set; }
+        public Guid MortgageId { get; set; }
         [Required]
         [Display(Name = "Name")]
         public string Name { get; set; }
@@ -28,6 +29,7 @@ namespace DataAccessLayer.Models
         public string State { get; set; }
         [Required]
         [Display(Name = "Amount")]
+        [DisplayFormat(DataFormatString = "{0:n2}", ApplyFormatInEditMode = true)]
         public decimal MortgageAmount { get; set; }
         [Required]
         //[Range(283210000, 283210005, ErrorMessage = "Select a Term.")]

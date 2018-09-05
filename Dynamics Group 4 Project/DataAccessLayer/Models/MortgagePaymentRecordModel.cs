@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,8 @@ namespace DataAccessLayer.Models
     public class MortgagePaymentRecordModel
     {
         public Guid MortgageId { get; set; }
+        public string Name { get; set; }
+        public string MortgageNumber { get; set; }
         public decimal Amount { get; set; }
         public DateTime DueDate { get; set; }
         public PaymentStatusEnum PaymentStatus { get; set; }

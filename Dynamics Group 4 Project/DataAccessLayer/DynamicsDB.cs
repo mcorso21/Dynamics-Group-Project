@@ -174,6 +174,7 @@ namespace DataAccessLayer
                     {
                         mortgages.Add(new MortgageModel()
                         {
+                            MortgageId = item.Id,
                             Name = (item.Contains("rev_name")) ? item["rev_name"].ToString() : "N/A",
                             Region = (item.Contains("rev_region"))
                                 ? (RegionEnum)Enum.Parse(typeof(RegionEnum), ((OptionSetValue)item["rev_region"]).Value.ToString())
@@ -236,43 +237,51 @@ namespace DataAccessLayer
             return cases;
         }
 
-        public static MortgagePaymentRecordModel GetNextPayment(Guid MortgageId)
+        public static List<MortgagePaymentRecordModel> GetPayments(List<MortgageModel> mortgages)
         {
-            MortgagePaymentRecordModel paymentRecord = null;
+            List< MortgagePaymentRecordModel> paymentRecords = null;
             try
             {
-
                 using (var context = new OrganizationServiceContext(service))
                 {
-                    var payments = from payment in context.CreateQuery("rev_mortgagepaymentrecord")
-                                where payment["rev_mortgageid"].Equals(MortgageId)
-                                orderby payment["rev_duedate"] 
-                                select new
-                                {
-                                    Mortgage = payment["rev_mortgageid"],
-                                    DueDate = payment["rev_duedate"],
-                                    Amount = payment["rev_payment"],
-                                    Status = payment["rev_status"]
-                                };
-
-                    foreach (var item in payments)
+                    foreach (MortgageModel mortgage in mortgages)
                     {
-                        paymentRecord = new MortgagePaymentRecordModel()
+                        var payments = (from payment in context.CreateQuery("rev_mortgagepaymentrecord")
+                                        where payment["rev_mortgageid"].Equals(mortgage.MortgageId)
+                                        && ((OptionSetValue)payment["rev_status"]).Value == 283210000
+                                        orderby payment["rev_duedate"]
+                                        select payment).ToList();
+
+                        foreach (var p in payments)
                         {
-                            MortgageId = (Guid)item.Mortgage,
-                            DueDate = (DateTime)item.DueDate,
-                            Amount = ((Money)item.Amount).Value,
-                            PaymentStatus = (PaymentStatusEnum)Enum.Parse(typeof(PaymentStatusEnum), item.Status.ToString())
-                        };
-                        break;
+                            Console.WriteLine($@"Name={p["rev_name"]},Amount={((Money)p["rev_payment"]).Value},Due={p["rev_duedate"]},Status={p["rev_status"]}");
+                        }
                     }
+
+                    // rev_name
+                    // rev_status
+                    // rev_payment
+                    // rev_mortgageid
+                    // rev_duedate
+
+                    //foreach (var item in payments)
+                    //{
+                    //    paymentRecord = new MortgagePaymentRecordModel()
+                    //    {
+                    //        MortgageId = (Guid)item.Mortgage,
+                    //        DueDate = (DateTime)item.DueDate,
+                    //        Amount = ((Money)item.Amount).Value,
+                    //        PaymentStatus = (PaymentStatusEnum)Enum.Parse(typeof(PaymentStatusEnum), item.Status.ToString())
+                    //    };
+                    //    break;
+                    //}
                 }
             }
             catch (Exception ex)
             {
                 logger.Info(ex.Message);
             }
-            return paymentRecord;
+            return paymentRecords;
         }
     }
 }

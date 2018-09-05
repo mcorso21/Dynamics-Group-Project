@@ -378,6 +378,7 @@
     <Content Include="Views\Mortgage\Index - Copy.cshtml" />
     <Content Include="Views\Mortgage\Create - Copy.cshtml" />
     <Content Include="Views\Mortgage\NewMortgage.cshtml" />
+    <Content Include="Views\Mortgage\MakePayment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

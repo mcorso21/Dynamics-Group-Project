@@ -117,6 +117,7 @@ namespace WebApplication.Controllers
                     mortgageIndexModel.WebAppId =   user.UserWebAppId.ToString();
                     mortgageIndexModel.Cases = DataAccessLayer.DynamicsDB.GetCases(user.ClientDynamicsId);
                     mortgageIndexModel.Mortgages = DataAccessLayer.DynamicsDB.GetMortgages(user.ClientDynamicsId);
+                    mortgageIndexModel.Payments = DataAccessLayer.DynamicsDB.GetPayments(mortgageIndexModel.Mortgages);
                 }
             }
             catch(Exception ex)

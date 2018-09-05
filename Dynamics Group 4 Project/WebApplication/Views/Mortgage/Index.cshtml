@@ -91,7 +91,7 @@
         <td> @m.Name </td>
         <td> @m.Region </td>
         <td> @m.State </td>
-        <td> $@m.MortgageAmount </td>
+        <td> $@Math.Round(m.MortgageAmount, 2) </td>
         <td> @m.MortgageTermInYears </td>
         <td> @m.Approval </td>
     </tr>
@@ -100,25 +100,28 @@
 <!-- Payments -->
 <div>
     <hr />
-    <h3>Payments</h3>
+    <h3>Upcoming Payments</h3>
     <!--linkText, actionName, controllerName, routeValues, htmlAttributes-->
     <hr />
 </div>
 <table class="table">
     <tr>
-        <th> Mortgage </th>
+        <th> Mortgage Number </th>
+        <th> Name </th>
         <th> Amount </th>
         <th> Due Date </th>
         <th> Status </th>
+        <th> Make Payment </th>
     </tr>
-    @*@foreach (var m in Model.Mortgages)
+    @foreach (var m in Model.Payments)
         {
             <tr>
-                <th> @m.Name </th>
-                <td> @m.Region </td>
-                <td> @m.Approval </td>
-                <td> $@m.MortgageAmount </td>
-                <td> @m.MortgageTermInMonths months </td>
+                <td> @m.MortgageNumber </td>
+                <td> @m.Name </td>
+                <td> @m.PaymentStatus </td>
+                <td> $@Math.Round(m.Amount, 2) </td>
+                <td> @m.DueDate </td>
+                <td> @Html.ActionLink("Pay Now", "MakePayment", "Mortgage", new { }, null) </td>
             </tr>
-        }*@
+        }
 </table>

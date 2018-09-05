@@ -15,18 +15,18 @@ namespace Dynamics_Group_4_Project
             // Create Contact
             //DataAccessLayer.DynamicsDB.CreateContact("WebApp", "Contact2", "123-45-6789");
 
-            // Create Mortgage
-            MortgageModel mortgageModel = new MortgageModel()
-            {
-                ContactId = new Guid("05dab347-58b0-e811-a96d-000d3a1ca7d6"),
-                Name = "Mike Test 3",
-                Region = RegionEnum.US,
-                State = "Alaska",
-                MortgageAmount = 1000000,
-                MortgageTermInYears = TermEnum.Fifteen
-            };
+            //// Create Mortgage
+            //MortgageModel mortgageModel = new MortgageModel()
+            //{
+            //    ContactId = new Guid("05dab347-58b0-e811-a96d-000d3a1ca7d6"),
+            //    Name = "Mike Test 3",
+            //    Region = RegionEnum.US,
+            //    State = "Alaska",
+            //    MortgageAmount = 1000000,
+            //    MortgageTermInYears = TermEnum.Fifteen
+            //};
 
-            DynamicsDB.CreateMortgage(mortgageModel);
+            //DynamicsDB.CreateMortgage(mortgageModel);
 
             // Create Case
             //MortgageCaseModel caseModel = new MortgageCaseModel()
@@ -47,7 +47,23 @@ namespace Dynamics_Group_4_Project
             //{
             //    Console.WriteLine($@"title={c.Title} Desc={c.Description} Prio={c.Priority}");
             //}
-            //Console.ReadLine();
+            
+
+            // Get Mortgage Payments
+            //Guid clientId = new Guid("63A0E5B9-88DF-E311-B8E5-6C3BE5A8B200");
+            List<MortgageModel> mortgages = new List<MortgageModel>
+            {
+                new MortgageModel
+                {
+                    MortgageId = new Guid("DE8DFE95-45B1-E811-A96C-000D3A1CAE35")
+                }
+            };
+            DynamicsDB.GetPayments(mortgages);
+
+
+
+
+            Console.ReadLine();
         }
     }
 }
