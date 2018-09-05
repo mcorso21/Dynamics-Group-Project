@@ -16,30 +16,30 @@ namespace Dynamics_Group_4_Project
             //DataAccessLayer.DynamicsDB.CreateContact("WebApp", "Contact2", "123-45-6789");
 
             // Create Mortgage
-            //MortgageModel mortgageModel = new MortgageModel()
-            //{
-            //    ContactId = new Guid("97D8FA4E-5DAD-E811-A96A-000D3A1CA939"),
-            //    Name = "WebAppTest",
-            //    Region = RegionEnum.US,
-            //    MortgageAmount = 1000000,
-            //    MortgageTermInMonths = 360,
-            //    Approval = ApprovalEnum.New
-            //};
-
-            //DynamicsDB.CreateMortgage(mortgageModel);
-
-            // Create Case
-            MortgageCaseModel caseModel = new MortgageCaseModel()
+            MortgageModel mortgageModel = new MortgageModel()
             {
                 ContactId = new Guid("05dab347-58b0-e811-a96d-000d3a1ca7d6"),
-                Title = "Web App Test Title #2",
-                Description = "Test Description",
-                Type = TypeEnum.Mortgage,
-                Priority = PriorityEnum.High,
-                HighPriorityReason = "High priorirty reaso nand stuff "
+                Name = "Mike Test 3",
+                Region = RegionEnum.US,
+                State = "Alaska",
+                MortgageAmount = 1000000,
+                MortgageTermInYears = TermEnum.Fifteen
             };
 
-            DynamicsDB.CreateCase(caseModel);
+            DynamicsDB.CreateMortgage(mortgageModel);
+
+            // Create Case
+            //MortgageCaseModel caseModel = new MortgageCaseModel()
+            //{
+            //    ContactId = new Guid("05dab347-58b0-e811-a96d-000d3a1ca7d6"),
+            //    Title = "Web App Test Title #2",
+            //    Description = "Test Description",
+            //    Type = TypeEnum.Mortgage,
+            //    Priority = PriorityEnum.High,
+            //    HighPriorityReason = "High priorirty reaso nand stuff "
+            //};
+
+            //DynamicsDB.CreateCase(caseModel);
 
             // Get Cases
             //var cases = DynamicsDB.GetCases(new Guid("05dab347-58b0-e811-a96d-000d3a1ca7d6"));

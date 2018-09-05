@@ -12,6 +12,8 @@ function init() {
     $("#Title").blur(cannotBeEmpty);
     $("#Description").blur(cannotBeEmpty);
     $("#HighPriorityReason").blur(cannotBeEmpty);
+
+    $("form").submit(onSubmit);
 }
 
 // Function for showing High Priority Reason
@@ -21,11 +23,9 @@ function toggleHighPriorityReason() {
     // If "High" require a High Priority Reason
     if (priorityVal == 1) {
         $("#HighPrioDiv").slideDown();
-        //$("#submitButton").prop("disabled", true)
     }
     else {
         $("#HighPrioDiv").slideUp();
-        //$("#submitButton").prop("disabled", false)
     }
 }
 
@@ -34,6 +34,15 @@ function cannotBeEmpty(e) {
     $("#" + this.id + "+ span").remove();
     // Validate
     if ($(this).val().replace(" ", "") == "") {
-        $(this).after('<span class="text-danger">This field is required.</span>');
+        $(this).after('<span class="text-danger"><br/>This field is required.</span>');
+    }
+}
+
+function onSubmit(e) {
+    if (!$("#HighPrioDiv").is(":hidden") && ($("#HighPriorityReason").val().replace(" ", "") == "")) {
+        $("#HighPriorityReason + span").remove();
+        $("#HighPriorityReason").after('<span class="text-danger">This field is required.</span>');
+        e.preventDefault();
+
     }
 }

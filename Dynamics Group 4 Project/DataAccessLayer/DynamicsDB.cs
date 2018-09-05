@@ -16,14 +16,18 @@ using System.Net;
 /*
  * To-Do:
  *  - How to add documents to sharepoint from console?
- *  - Make Payments (Update Mortgage Payment Record)            -- Done, but not tested
+ *  
+ *  - Create Mortgage
+ *  - Make Payment
+ *  
+ *  - Get Payments
  *  
  *  Done:
- *  - Apply for Mortgage (Create Mortgage)
- *  - Create Client
- *  - View Cases
+ *  - Create Contact
  *  - Create Case
- *      - Need to finish attributes
+ *  
+ *  - Get Cases
+ *  - Get Mortgages
  *             
  */
 namespace DataAccessLayer
@@ -77,16 +81,45 @@ namespace DataAccessLayer
         {
             try
             {
-
                 // Create new mortgage
                 Entity newMortgage = new Entity("rev_mortgage");
                 newMortgage.Attributes.Add("rev_customerid", new EntityReference("contact", mortgageModel.ContactId));
-                //newMortgage.Attributes.Add("rev_customerid", mortgageModel.ContactId);
+                // Get State
+                Guid StateId = Guid.Empty;
+                if (mortgageModel.State != "")
+                {
+                    try
+                    {
+                        using (var context = new OrganizationServiceContext(service))
+                        {
+                            var ms = (from m in context.CreateQuery("rev_salestax")
+                                      where m["rev_name"].Equals(mortgageModel.State)
+                                      select m).First();
+
+                            if (ms.Id != null) StateId = ms.Id;
+                        }
+                    }
+                    catch(Exception ex)
+                    {
+                        logger.Info(ex.Message);
+                        logger.Info(ex.StackTrace);
+                    }
+                }
+                if (StateId != Guid.Empty) newMortgage.Attributes.Add("rev_salestaxid", new EntityReference("rev_salestax", StateId));
                 newMortgage.Attributes.Add("rev_name", mortgageModel.Name);
                 newMortgage.Attributes.Add("rev_region", new OptionSetValue((int)mortgageModel.Region));
-                newMortgage.Attributes.Add("rev_approval", new OptionSetValue((int)mortgageModel.Approval));
+                newMortgage.Attributes.Add("rev_approval", new OptionSetValue(283210000));      // Set to New
                 newMortgage.Attributes.Add("rev_mortgageamount", new Money(mortgageModel.MortgageAmount));
-                newMortgage.Attributes.Add("rev_mortgageterm", mortgageModel.MortgageTermInMonths);
+                newMortgage.Attributes.Add("rev_mortgageterm", new OptionSetValue((int)mortgageModel.MortgageTermInYears));
+                // State
+                // Documents
+                /* */
+
+
+                // Query for State Name selected, get id and associate
+                //newMortgage.Attributes.Add("rev_salestaxid", new EntityReference("rev_salestax", mortgageModel.ContactId));
+
+                /* */
                 // Create request for mortgage creation
                 CreateRequest request = new CreateRequest();
                 request.Target = newMortgage;
@@ -145,14 +178,17 @@ namespace DataAccessLayer
                             Region = (item.Contains("rev_region"))
                                 ? (RegionEnum)Enum.Parse(typeof(RegionEnum), ((OptionSetValue)item["rev_region"]).Value.ToString())
                                 : RegionEnum.US,
+                            State = (item.Contains("rev_salestaxid")) ? ((EntityReference)item["rev_salestaxid"]).Name : "N/A",
                             Approval = (item.Contains("rev_approval"))
                                 ? (ApprovalEnum)Enum.Parse(typeof(ApprovalEnum), ((OptionSetValue)item["rev_approval"]).Value.ToString())
                                 : ApprovalEnum.Review,
                             MortgageAmount = (item.Contains("rev_mortgageamount"))
                                 ? ((Money)item["rev_mortgageamount"]).Value : 0,
-                            MortgageTermInMonths = (item.Contains("rev_mortgageterm"))
-                                ? int.Parse(item["rev_mortgageterm"].ToString()) : 0,
+                            MortgageTermInYears = (item.Contains("rev_mortgageterm"))
+                                ? (TermEnum)Enum.Parse(typeof(TermEnum), ((OptionSetValue)item["rev_mortgageterm"]).Value.ToString())
+                                : TermEnum.Thirty,
                             MortgageNumber = (item.Contains("rev_mortgagenumber")) ? item["rev_mortgagenumber"].ToString() : "N/A",
+
                         });
                     }
                 }

@@ -33,13 +33,13 @@
         </div>
 
         <div class="form-group" id="statesDiv" style="display: none;">
-            @Html.LabelFor(model => model.Region, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EnumDropDownListFor(
-                    model => model.Region,
-                    "Select State",
-                    new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Region, "", new { @class = "text-danger" })
+                @Html.DropDownListFor(model => model.State, 
+                                   new SelectList(ViewBag.States, "Value", "Text"),
+                                   "Select State",
+                                   new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -52,10 +52,13 @@
         </div>
                 
         <div class="form-group">
-            @Html.LabelFor(model => model.MortgageTermInMonths, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.MortgageTermInYears, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.MortgageTermInMonths, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.MortgageTermInMonths, "", new { @class = "text-danger" })
+                @Html.EnumDropDownListFor(
+                    model => model.MortgageTermInYears,
+                    "Select Term",
+                    new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.MortgageTermInYears, "", new { @class = "text-danger" })
             </div>
         </div>
 

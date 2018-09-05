@@ -79,8 +79,9 @@
         <th> Number </th>
         <th> Name </th>
         <th> Region </th>
+        <th> State </th>
         <th> Amount </th>
-        <th> Term (Months) </th>
+        <th> Term (Years) </th>
         <th> Status </th>
     </tr>
     @foreach (var m in Model.Mortgages)
@@ -89,8 +90,9 @@
         <td> @m.MortgageNumber </td>
         <td> @m.Name </td>
         <td> @m.Region </td>
+        <td> @m.State </td>
         <td> $@m.MortgageAmount </td>
-        <td> @m.MortgageTermInMonths </td>
+        <td> @m.MortgageTermInYears </td>
         <td> @m.Approval </td>
     </tr>
     }

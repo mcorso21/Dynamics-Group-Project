@@ -12,6 +12,8 @@ namespace DataAccessLayer.Models
 
     public enum ApprovalEnum { New = 283210000, Review = 283210001, Approve = 283210002 };
 
+    public enum TermEnum { Ten = 283210000, Fifteen = 283210001, Twenty = 283210002, Thirty = 283210003 };
+
     public class MortgageModel
     {
         public Guid ContactId { get; set; }
@@ -23,14 +25,17 @@ namespace DataAccessLayer.Models
         [Display(Name = "Region")]
         [Range(283210000, 283210010, ErrorMessage = "Select a Region.")]
         public RegionEnum Region { get; set; }
+        public string State { get; set; }
         [Required]
         [Display(Name = "Amount")]
         public decimal MortgageAmount { get; set; }
         [Required]
-        [Display(Name = "Term (Months)")]
-        public int MortgageTermInMonths { get; set; }
+        //[Range(283210000, 283210005, ErrorMessage = "Select a Term.")]
+        [Display(Name = "Term (Years)")]
+        public TermEnum MortgageTermInYears { get; set; }
         [Display(Name = "Approval Status")]
         public ApprovalEnum Approval { get; set; }
         public List<FileStream> IdentityDocuments { get; set; }
+
     }
 }
