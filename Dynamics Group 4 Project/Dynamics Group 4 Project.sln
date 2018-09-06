@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicsPlugins", "Dynamics
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicsCustomWorkflows", "DynamicsCustomWorkflows\DynamicsCustomWorkflows.csproj", "{EF8A836D-9DD3-4DC0-A474-89F8D6C18E69}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DailyUpdateConsoleWebJob", "DailyUpdateConsoleWebJob\DailyUpdateConsoleWebJob.csproj", "{FA980FBA-D69B-4BC5-98E4-CCCC3B810E4F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{EF8A836D-9DD3-4DC0-A474-89F8D6C18E69}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF8A836D-9DD3-4DC0-A474-89F8D6C18E69}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF8A836D-9DD3-4DC0-A474-89F8D6C18E69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA980FBA-D69B-4BC5-98E4-CCCC3B810E4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA980FBA-D69B-4BC5-98E4-CCCC3B810E4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA980FBA-D69B-4BC5-98E4-CCCC3B810E4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA980FBA-D69B-4BC5-98E4-CCCC3B810E4F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
