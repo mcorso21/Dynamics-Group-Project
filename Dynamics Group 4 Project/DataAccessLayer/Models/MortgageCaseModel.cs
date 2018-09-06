@@ -17,6 +17,13 @@ namespace DataAccessLayer.Models
         [Required]
         [Display(Name = "Title")]
         public string Title { get; set; }
+        [Required]
+        [Display(Name = "Mortgage Id")]
+        public Guid MortgageId { get; set; }
+        [Display(Name = "Mortgage Number")]
+        public string MortgageNumber { get; set; }
+        [Display(Name = "Mortgage Name")]
+        public string MortgageName { get; set; }
         [Display(Name = "Dynamics Contact ID")]
         public Guid ContactId { get; set; }
         [Required]

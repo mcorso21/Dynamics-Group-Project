@@ -51,6 +51,7 @@
 </div>
 <table class="table">
     <tr>
+        <th> Mortgage Name </th>
         <th> Title </th>
         <th> Description </th>
         <th> Priority </th>
@@ -60,7 +61,8 @@
     @foreach (var c in Model.Cases)
     {
         <tr>
-            <th> @c.Title </th>
+            <td> @c.MortgageName </td>
+            <td> @c.Title </td>
             <td> @c.Description </td>
             <td> @c.Priority </td>
             <td> @c.HighPriorityReason </td>

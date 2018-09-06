@@ -42,28 +42,28 @@ namespace Dynamics_Group_4_Project
             //DynamicsDB.CreateCase(caseModel);
 
             // Get Cases
-            //var cases = DynamicsDB.GetCases(new Guid("05dab347-58b0-e811-a96d-000d3a1ca7d6"));
-            //foreach (MortgageCaseModel c in cases)
-            //{
-            //    Console.WriteLine($@"title={c.Title} Desc={c.Description} Prio={c.Priority}");
-            //}
-            
+            var cases = DynamicsDB.GetCases(new Guid("05dab347-58b0-e811-a96d-000d3a1ca7d6"));
+            foreach (MortgageCaseModel c in cases)
+            {
+                Console.WriteLine($"title={c.Title} Desc={c.Description} Prio={c.Priority} mortgageId={c.MortgageId} mortgageName={c.MortgageName}");
+            }
+
 
             // Get Mortgage Payments
             //Guid clientId = new Guid("63A0E5B9-88DF-E311-B8E5-6C3BE5A8B200");
-            List<MortgageModel> mortgages = new List<MortgageModel>
-            {
-                new MortgageModel
-                {
-                    MortgageId = new Guid("DE8DFE95-45B1-E811-A96C-000D3A1CAE35")
-                }
-            };
-            List<MortgagePaymentRecordModel> payments = DynamicsDB.GetPayments(mortgages);
+            //List<MortgageModel> mortgages = new List<MortgageModel>
+            //{
+            //    new MortgageModel
+            //    {
+            //        MortgageId = new Guid("DE8DFE95-45B1-E811-A96C-000D3A1CAE35")
+            //    }
+            //};
+            //List<MortgagePaymentRecordModel> payments = DynamicsDB.GetPayments(mortgages);
 
-            foreach (MortgagePaymentRecordModel p in payments)
-            {
-                Console.WriteLine(p.Name + " " + p.Amount);
-            }
+            //foreach (MortgagePaymentRecordModel p in payments)
+            //{
+            //    Console.WriteLine(p.Name + " " + p.Amount);
+            //}
 
 
 

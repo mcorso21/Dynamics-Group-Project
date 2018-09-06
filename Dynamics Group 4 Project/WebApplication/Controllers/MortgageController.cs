@@ -131,6 +131,30 @@ namespace WebApplication.Controllers
         // GET: User/Create
         public ActionResult CreateCase()
         {
+            List<SelectListItem> UserMortgages = new List<SelectListItem>();
+            List<MortgageModel> Mortgages = new List<MortgageModel>();
+            try
+            {
+                using (var context = new ApplicationDbContext())
+                {
+                    Guid userId = new Guid(User.Identity.GetUserId());
+                    var user = (from u in context.UserMapModels
+                                where u.UserWebAppId == userId
+                                select u).ToList()[0];
+
+                    Mortgages = DataAccessLayer.DynamicsDB.GetMortgages(user.ClientDynamicsId);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"MortgageController CreateCase threw: {ex.Message}\n{ex.StackTrace}");
+            }
+            foreach(MortgageModel m in Mortgages)
+            {
+                UserMortgages.Add(new SelectListItem { Text = $"{m.Name} ({m.MortgageNumber})", Value = m.MortgageId.ToString() });
+            }
+
+            ViewBag.UserMortgages = new SelectList(UserMortgages, "Value", "Text");
             return View();
         }
 
@@ -139,7 +163,7 @@ namespace WebApplication.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateCase([Bind(Include = "Title,Description,Priority,HighPriorityReason,Type")] MortgageCaseModel caseModel)
+        public ActionResult CreateCase([Bind(Include = "MortgageId,Title,Description,Priority,HighPriorityReason,Type")] MortgageCaseModel caseModel)
         {
             if (ModelState.IsValid)
             {
@@ -154,6 +178,29 @@ namespace WebApplication.Controllers
                 return RedirectToAction("Index");
             }
 
+            List<SelectListItem> UserMortgages = new List<SelectListItem>();
+            List<MortgageModel> Mortgages = new List<MortgageModel>();
+            try
+            {
+                using (var context = new ApplicationDbContext())
+                {
+                    Guid userId = new Guid(User.Identity.GetUserId());
+                    var user = (from u in context.UserMapModels
+                                where u.UserWebAppId == userId
+                                select u).ToList()[0];
+
+                    Mortgages = DataAccessLayer.DynamicsDB.GetMortgages(user.ClientDynamicsId);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"MortgageController CreateCase threw: {ex.Message}\n{ex.StackTrace}");
+            }
+            foreach (MortgageModel m in Mortgages)
+            {
+                UserMortgages.Add(new SelectListItem { Text = $"{m.Name} ({m.MortgageNumber})", Value = m.MortgageId.ToString() });
+            }
+            ViewBag.UserMortgages = new SelectList(UserMortgages, "Value", "Text");
             return View(caseModel);
         }
 

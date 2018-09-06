@@ -27,6 +27,16 @@
                         <li>@Html.ActionLink("Apply for Mortgage", "NewMortgage", "Mortgage")</li>
                         <li>@Html.ActionLink("My Account", "Index", "Mortgage")</li>
                     }
+                    <li class="dropdown">
+                        <a class="btn btn-secondary dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Support
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <li><a class="dropdown-item" href="#">Apply for a Mortgage</a></li>
+                            <li><a class="dropdown-item" href="#">Report an Incident</a></li>
+                            <li><a class="dropdown-item" href="#">Make a Payment</a></li>
+                        </ul>
+                    </li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

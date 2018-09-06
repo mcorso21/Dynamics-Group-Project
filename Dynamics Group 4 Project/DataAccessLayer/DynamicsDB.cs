@@ -16,18 +16,6 @@ using System.Net;
 /*
  * To-Do:
  *  - How to add documents to sharepoint from console?
- *  
- *  - Create Mortgage
- *  - Make Payment
- *  
- *  - Get Payments
- *  
- *  Done:
- *  - Create Contact
- *  - Create Case
- *  
- *  - Get Cases
- *  - Get Mortgages
  *             
  */
 namespace DataAccessLayer
@@ -141,6 +129,7 @@ namespace DataAccessLayer
                 // Create new case
                 Entity newCase = new Entity("incident");
                 newCase.Attributes.Add("customerid", new EntityReference("contact", mortgageCaseModel.ContactId));
+                newCase.Attributes.Add("rev_mortgagecaseid", new EntityReference("rev_mortgage", mortgageCaseModel.MortgageId));
                 newCase.Attributes.Add("title", mortgageCaseModel.Title);
                 newCase.Attributes.Add("description", mortgageCaseModel.Description);
                 newCase.Attributes.Add("prioritycode", new OptionSetValue((int)mortgageCaseModel.Priority));
@@ -214,8 +203,28 @@ namespace DataAccessLayer
 
                     foreach (var item in incidents)
                     {
+                        if ((item.Contains("rev_mortgagecaseid")))
+                        {
+                            var mortgage = (EntityReference)item["rev_mortgagecaseid"];
+                            var keys = ((EntityReference)item["rev_mortgagecaseid"]).KeyAttributes;
+
+                            foreach (var v in ((EntityReference)item["rev_mortgagecaseid"]).KeyAttributes)
+                            {
+                                System.Diagnostics.Debug.WriteLine($"key={v.Key}");
+                            }
+                        }
                         cases.Add(new MortgageCaseModel()
                         {
+                            // Would have to perform a separate query to get the MortgageNumber
+                            //MortgageNumber = (item.Contains("rev_mortgagecaseid"))
+                            //    ? (((EntityReference)item["rev_mortgagecaseid"]).KeyAttributes.Contains("rev_mortgagenumber")
+                            //        ? "Has rev_mortgagecaseid AND rev_mortgagenumber"
+                            //        : "Has rev_mortgagecaseid; Does NOT have rev_mortgagenumber") 
+                            //    : "Does NOT have rev_mortgagecaseid",
+                            MortgageId = (item.Contains("rev_mortgagecaseid")) 
+                                ? ((EntityReference)item["rev_mortgagecaseid"]).Id : Guid.Empty,
+                            MortgageName = (item.Contains("rev_mortgagecaseid"))
+                                ? ((EntityReference)item["rev_mortgagecaseid"]).Name : "N/A",
                             Title = (item.Contains("title")) ? item["title"].ToString() : "N/A",
                             Description = (item.Contains("description")) ? item["description"].ToString() : "N/A",
                             Priority = (item.Contains("prioritycode")) 
