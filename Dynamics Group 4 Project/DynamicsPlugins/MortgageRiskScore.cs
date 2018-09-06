@@ -3,7 +3,7 @@
 namespace DynamicsPlugins
 {
     [DataContract]
-    class MortgageRiskScore
+    public class MortgageRiskScore
     {
         [DataMember]
         public int RiskScore { get; set; }

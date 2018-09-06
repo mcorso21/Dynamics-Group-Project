@@ -9,7 +9,7 @@ using System.IO;
 
 namespace DynamicsPlugins
 {
-    class Helper
+    public class Helper
     {
         public static string JsonSerialize<T>(T t)
         {
