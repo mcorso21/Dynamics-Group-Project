@@ -191,6 +191,40 @@ namespace WebApplication.Controllers
             return View(mortgageModel);
         }
 
+        [HttpGet]
+        public ActionResult MakePayment(Guid? id)
+        {
+            MortgageIndexModel mortgageIndexModel = new MortgageIndexModel();
+            try
+            {
+                // Update payment
+                DataAccessLayer.DynamicsDB.MakePayment((Guid)id);
+                //// Get user data from web app SQL DB
+                //using (var context = new ApplicationDbContext())
+                //{
+                //    Guid userId = new Guid(User.Identity.GetUserId());
+                //    var user = (from u in context.UserMapModels
+                //                where u.UserWebAppId == userId
+                //                select u).ToList()[0];
+
+                //    mortgageIndexModel.FirstName = user.FirstName;
+                //    mortgageIndexModel.LastName = user.LastName;
+                //    mortgageIndexModel.DynamicsId = user.ClientDynamicsId.ToString();
+                //    mortgageIndexModel.WebAppId = user.UserWebAppId.ToString();
+                //}
+                //// Get contact's data from Dynamics
+                //mortgageIndexModel.Cases = DataAccessLayer.DynamicsDB.GetCases(new Guid(mortgageIndexModel.DynamicsId));
+                //mortgageIndexModel.Mortgages = DataAccessLayer.DynamicsDB.GetMortgages(new Guid(mortgageIndexModel.DynamicsId));
+                //mortgageIndexModel.Payments = DataAccessLayer.DynamicsDB.GetPayments(mortgageIndexModel.Mortgages);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"MortgageController Index threw: {ex.Message}\n{ex.StackTrace}");
+            }
+            //ViewBag.Title = $"{User.Identity.Name}";
+            return RedirectToAction("Index");
+        }
+
         //// GET: User/Details/5
         //public ActionResult Details(Guid? id)
         //{
