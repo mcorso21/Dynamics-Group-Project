@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicsPlugins", "Dynamics
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicsCustomWorkflows", "DynamicsCustomWorkflows\DynamicsCustomWorkflows.csproj", "{EF8A836D-9DD3-4DC0-A474-89F8D6C18E69}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebResources", "WebResources\WebResources.csproj", "{60F12016-0BCF-4390-B172-D340B8D5BD0E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{EF8A836D-9DD3-4DC0-A474-89F8D6C18E69}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF8A836D-9DD3-4DC0-A474-89F8D6C18E69}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF8A836D-9DD3-4DC0-A474-89F8D6C18E69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60F12016-0BCF-4390-B172-D340B8D5BD0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60F12016-0BCF-4390-B172-D340B8D5BD0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60F12016-0BCF-4390-B172-D340B8D5BD0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60F12016-0BCF-4390-B172-D340B8D5BD0E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
