@@ -4,29 +4,32 @@ using System.Runtime.Serialization;
 namespace DataAccessLayer.Models
 {
     [DataContract]
-    public class MortgageBaseApr
+    public class MortgageApr
     {
-        public int? AccessKey;
-        private DateTime LastModified;
-        private double Rate;
         [DataMember]
         public DateTime Date { get; set; }
         [DataMember]
         public double Apr { get; set; }
+    }
+    public static class MortgageBaseApr
+    {
+        public static int? AccessKey;
+        private static DateTime LastModified;
+        private static double Rate;
 
-        public MortgageBaseApr()
+        static MortgageBaseApr()
         {
             AccessKey = 123456;
             LastModified = DateTime.Today;
             Rate = 4.298;
         }
 
-        public DateTime GetLastModified()
+        public static DateTime GetLastModified()
         {
             return LastModified;
         }
 
-        public double GetRate()
+        public static double GetRate()
         {
             if (LastModified < DateTime.Today)
             {
@@ -36,7 +39,7 @@ namespace DataAccessLayer.Models
             return Rate;
         }
 
-        public void SetRate(int key, double rate)
+        public static void SetRate(int key, double rate)
         {
             if (key == AccessKey)
                 Rate = rate;

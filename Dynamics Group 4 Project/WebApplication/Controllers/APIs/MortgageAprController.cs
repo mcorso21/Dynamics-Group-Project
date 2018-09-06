@@ -11,15 +11,14 @@ namespace WebApplication.Controllers.APIs
     public class MortgageAprController : ApiController
     {
         public static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();     //logger.Info(e.Message);
-        private MortgageBaseApr baseApr = new MortgageBaseApr();
 
         [HttpGet]
-        public JsonResult<MortgageBaseApr> GetApr()
+        public JsonResult<MortgageApr> GetApr()
         {
-            return Json<MortgageBaseApr>(new MortgageBaseApr()
+            return Json<MortgageApr>(new MortgageApr()
             {
-                Date = baseApr.GetLastModified(),
-                Apr = baseApr.GetRate()
+                Date = MortgageBaseApr.GetLastModified(),
+                Apr = MortgageBaseApr.GetRate()
             });
         }
     }
