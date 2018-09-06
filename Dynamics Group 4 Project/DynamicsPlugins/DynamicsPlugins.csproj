@@ -30,6 +30,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>assemblykey.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
@@ -39,10 +45,6 @@
     </Reference>
     <Reference Include="Microsoft.Xrm.Sdk">
       <HintPath>..\..\..\Dynamics365Soln\packages\Microsoft.CrmSdk.XrmTooling.PluginRegistrationTool.9.0.2.4\tools\Microsoft.Xrm.Sdk.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Dynamics365Soln\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.5.9\lib\net45\NLog.dll</HintPath>
@@ -63,6 +65,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helper.cs" />
+    <Compile Include="MortgageRiskScore.cs" />
     <Compile Include="MortgageUpdate.cs" />
     <Compile Include="MortgageCreate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -99,6 +103,7 @@
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
     <None Include="App.config" />
+    <None Include="assemblykey.snk" />
     <None Include="Content\bootstrap-grid.css.map" />
     <None Include="Content\bootstrap-grid.min.css.map" />
     <None Include="Content\bootstrap-reboot.css.map" />

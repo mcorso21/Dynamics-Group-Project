@@ -2,7 +2,6 @@
 using Microsoft.Xrm.Sdk.Messages;
 using Microsoft.Xrm.Sdk.Metadata;
 using Microsoft.Xrm.Sdk.Query;
-using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
 using System.Net;
@@ -37,9 +36,9 @@ namespace DynamicsPlugins
                     string responseString = reader.ReadToEnd();
                     reader.Close();
                     response.Close();
-                    JObject jsonResponse = JObject.Parse(responseString);
+                    MortgageRiskScore mrs = Helper.JsonDeserialize<MortgageRiskScore>(responseString);
                     // example response: {"RiskScore":30}
-                    decimal RiskScore = (decimal)jsonResponse["RiskScore"];
+                    decimal RiskScore = mrs.RiskScore;
 
                     Guid BaseAprGuid = new Guid("4C767953-36AD-E811-A968-000D3A1CA7D6");
                     Guid MarginGuid = new Guid("D6EF9022-7EAF-E811-A968-000D3A1CABCE");
