@@ -12,6 +12,7 @@ namespace DataAccessLayer.Models
 
     public class MortgagePaymentRecordModel
     {
+        public Guid Id { get; set; }
         public Guid MortgageId { get; set; }
         public string Name { get; set; }
         public string MortgageNumber { get; set; }

@@ -44,9 +44,10 @@
 <!-- Cases -->
 <div>
     <hr />
-    <h3>Cases - @Html.ActionLink("Create Case", "CreateCase", "Mortgage", new { }, null)</h3>
+    <h3>Cases</h3>
+    @*<h3>Cases - @Html.ActionLink("Create Case", "CreateCase", "Mortgage", new { }, null)</h3>*@
     <!--linkText, actionName, controllerName, routeValues, htmlAttributes-->
-    <hr />
+    @*<hr />*@
 </div>
 <table class="table">
     <tr>
@@ -70,9 +71,10 @@
 <!-- Mortgages -->
 <div>
     <hr />
-    <h3>Mortgages - @Html.ActionLink("Apply for Mortgage", "NewMortgage", "Mortgage", new { }, null)</h3>
+    <h3>Mortgages</h3>
+    @*<h3>Mortgages - @Html.ActionLink("Apply for Mortgage", "NewMortgage", "Mortgage", new { }, null)</h3>*@
     <!--linkText, actionName, controllerName, routeValues, htmlAttributes-->
-    <hr />
+    @*<hr />*@
 </div>
 <table class="table">
     <tr>
@@ -102,7 +104,7 @@
     <hr />
     <h3>Upcoming Payments</h3>
     <!--linkText, actionName, controllerName, routeValues, htmlAttributes-->
-    <hr />
+    @*<hr />*@
 </div>
 <table class="table">
     <tr>
@@ -118,10 +120,10 @@
             <tr>
                 <td> @m.MortgageNumber </td>
                 <td> @m.Name </td>
-                <td> @m.PaymentStatus </td>
                 <td> $@Math.Round(m.Amount, 2) </td>
-                <td> @m.DueDate </td>
-                <td> @Html.ActionLink("Pay Now", "MakePayment", "Mortgage", new { }, null) </td>
+                <td> @m.DueDate.ToString("yyyy-MM-dd") </td>
+                <td> @m.PaymentStatus </td>
+                <td> @Html.ActionLink("Pay Now", "MakePayment", "Mortgage", new { id = m.Id }, null) </td>
             </tr>
         }
 </table>

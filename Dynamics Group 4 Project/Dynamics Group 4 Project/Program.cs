@@ -58,7 +58,12 @@ namespace Dynamics_Group_4_Project
                     MortgageId = new Guid("DE8DFE95-45B1-E811-A96C-000D3A1CAE35")
                 }
             };
-            DynamicsDB.GetPayments(mortgages);
+            List<MortgagePaymentRecordModel> payments = DynamicsDB.GetPayments(mortgages);
+
+            foreach (MortgagePaymentRecordModel p in payments)
+            {
+                Console.WriteLine(p.Name + " " + p.Amount);
+            }
 
 
 
