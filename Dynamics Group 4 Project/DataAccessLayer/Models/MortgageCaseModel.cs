@@ -18,7 +18,7 @@ namespace DataAccessLayer.Models
         [Display(Name = "Title")]
         public string Title { get; set; }
         [Required]
-        [Display(Name = "Mortgage Id")]
+        [Display(Name = "Mortgage")]
         public Guid MortgageId { get; set; }
         [Display(Name = "Mortgage Number")]
         public string MortgageNumber { get; set; }
