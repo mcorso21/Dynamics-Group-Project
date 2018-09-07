@@ -71,13 +71,14 @@ namespace DynamicsPlugins
                     }
 
                     decimal IP = 12; // interest period per year, should be 12 since we are calculating monthly payment
-                    decimal APR = BaseApr + Margin + (decimal)(Math.Log10((double)RiskScore) / 100) + Tax / 100;
+                    decimal APR = BaseApr + Margin + (decimal)(Math.Log10((double)RiskScore) / 100) + Tax;
                     decimal PV = ((Money)mortgage.Attributes["rev_mortgageamount"]).Value; // present value
                     decimal R = APR / IP; // periodic interest rate
                     decimal N = IP * decimal.Parse(selectedOptionLabel); // interest periods for overall time period
                     decimal P = PV * R / (1 - (decimal)Math.Pow((double)(1 + R), (double)-N)); // monthly payment
                     Money MonthlyPayment = new Money(P);
 
+                    mortgage.Attributes.Add("rev_finalapr", APR);
                     mortgage.Attributes.Add("rev_mortgagepayment", MonthlyPayment);
                 }
 
