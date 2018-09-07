@@ -1,0 +1,14 @@
+﻿<h3>How to Report an Incident:</h3>
+<ol>
+    <li> Login to your account at @Html.ActionLink("Contoso Mortgages", "Index", "Home", new { }, null). </li>
+    <li> Along the website's main menu bar located at the top of page, select @Html.ActionLink("Report Incident", "CreateCase", "Mortgage", new { }, null) . </li>
+    <li> Incident Report Fields: </li>
+    <ol>
+        <li> <b>Mortgage</b>: Select an existing Mortgage this Incident applies to. </li>
+        <li> <b>Title</b>: The Incident's title can be anything you like that helps to generally describe the Incident. </li>
+        <li> <b>Description</b>: A more detailed description of the Incident. </li>
+        <li> <b>Priority</b>: Specify 'High', 'Normal', or 'Low' to denote the urgency of the incident. </li>
+        <li> <b>High Priority Reason</b>: This field only appears if you selected 'High' as the Priority level. This field is meant to be the rationale for this incident being a high priority. </li>
+        <li> <b>Type</b>: Specify the type of the incident </li>
+    </ol>
+</ol>

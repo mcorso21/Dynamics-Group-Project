@@ -32,11 +32,11 @@
                             Support
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="https://revature4.crm.dynamics.com//WebResources/rev_KBA-MortgageApply">Applying for a Mortgage</a></li>
-                            <li><a class="dropdown-item" href="https://revature4.crm.dynamics.com//WebResources/rev_KBA-MortgageView">Viewing your Mortgage Information</a></li>
-                            <li><a class="dropdown-item" href="https://revature4.crm.dynamics.com//WebResources/rev_KBA-IncidentReport">Reporting an Incident</a></li>
-                            <li><a class="dropdown-item" href="https://revature4.crm.dynamics.com//WebResources/rev_KBA-IncidentView">Viewing Reported Incidents</a></li>
-                            <li><a class="dropdown-item" href="https://revature4.crm.dynamics.com//WebResources/rev_KBA-MakePayment">Making a Mortgage Payment</a></li>
+                            <li> @Html.ActionLink("Applying for a Mortgage", "Article", "Support", new { article = "_MortgageApply" }, null) </li>
+                            <li> @Html.ActionLink("Viewing your Mortgages", "Article", "Support", new { article = "_MortgageView" }, null) </li>
+                            <li> @Html.ActionLink("Reporting an Incident", "Article", "Support", new { article = "_IncidentReport" }, null) </li>
+                            <li> @Html.ActionLink("Viewing Reported Incidents", "Article", "Support", new { article = "_IncidentView" }, null) </li>
+                            <li> @Html.ActionLink("Make a Payment", "Article", "Support", new { article = "_MakePayment" }, null) </li>
                         </ul>
                     </li>
                 </ul>

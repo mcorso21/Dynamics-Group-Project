@@ -40,6 +40,41 @@ namespace DataAccessLayer
                 : (IOrganizationService)client.OrganizationServiceProxy);
         }
 
+        public static void Test()
+        {
+            try
+            {
+                using (var context = new OrganizationServiceContext(service))
+                {
+                    var cases = (from i in context.CreateQuery("incident")
+                                 select i).ToList();
+
+                    var associates = (from u in context.CreateQuery("systemuser")
+                                 where ((EntityReference)u["positionid"]).Id == new Guid("3AD119C4-4FAD-E811-A96B-000D3A1CA723")
+                                 select new
+                                 {
+                                     UserId = u.Id
+                                 }).ToList();
+
+                    var casesByOwner = cases.GroupBy(u => u["ownerid"])
+                                    .Select(grp => grp.ToList())
+                                    .ToList().OrderBy(c => c.Count());
+
+                    foreach (var c in casesByOwner)
+                    {
+                        if (associates.Any(a => a.UserId.Equals(((EntityReference)c[0]["ownerid"]).Id)))
+                        {
+                            Console.WriteLine($"Assigned to user {((EntityReference)c[0]["ownerid"]).Id} with {c.Count()} cases.");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Info(ex.Message);
+            }
+        }
+
         public static Guid CreateContact(string firstname, string lastname, string ssn)
         {
             Guid contactGuid = Guid.Empty;
@@ -74,26 +109,15 @@ namespace DataAccessLayer
                 newMortgage.Attributes.Add("rev_customerid", new EntityReference("contact", mortgageModel.ContactId));
                 // Get State
                 Guid StateId = Guid.Empty;
-                if (mortgageModel.State != "")
+                if (mortgageModel.State == null) mortgageModel.State = "Canada";
+                using (var context = new OrganizationServiceContext(service))
                 {
-                    try
-                    {
-                        using (var context = new OrganizationServiceContext(service))
-                        {
-                            var ms = (from m in context.CreateQuery("rev_salestax")
-                                      where m["rev_name"].Equals(mortgageModel.State)
-                                      select m).FirstOrDefault();
+                    var ms = (from m in context.CreateQuery("rev_salestax")
+                                where m["rev_name"].Equals(mortgageModel.State)
+                                select m).FirstOrDefault();
 
-                            if (ms.Id != null) StateId = ms.Id;
-                        }
-                    }
-                    catch(Exception ex)
-                    {
-                        logger.Info(ex.Message);
-                        logger.Info(ex.StackTrace);
-                    }
+                    if (ms.Id != null) newMortgage.Attributes.Add("rev_salestaxid", new EntityReference("rev_salestax", ms.Id));
                 }
-                if (StateId != Guid.Empty) newMortgage.Attributes.Add("rev_salestaxid", new EntityReference("rev_salestax", StateId));
                 newMortgage.Attributes.Add("rev_name", mortgageModel.Name);
                 newMortgage.Attributes.Add("rev_region", new OptionSetValue((int)mortgageModel.Region));
                 newMortgage.Attributes.Add("rev_approval", new OptionSetValue(283210000));      // Set to New
@@ -113,7 +137,7 @@ namespace DataAccessLayer
                 request.Target = newMortgage;
                 // Execute request
                 CreateResponse resp = (CreateResponse)service.Execute(request);
-                Guid mortgageGuid = (Guid)resp.Results["id"];
+                //Guid mortgageGuid = (Guid)resp.Results["id"];
             }
             catch (Exception ex)
             {

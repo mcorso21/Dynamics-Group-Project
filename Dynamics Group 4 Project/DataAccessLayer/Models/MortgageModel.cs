@@ -30,6 +30,7 @@ namespace DataAccessLayer.Models
         [Required]
         [Display(Name = "Amount")]
         [DisplayFormat(DataFormatString = "{0:n2}", ApplyFormatInEditMode = true)]
+        [Range(1, 2000000000, ErrorMessage = "Mortgage amount must be between $1 and $2,000,000,000")]
         public decimal MortgageAmount { get; set; }
         [Required]
         //[Range(283210000, 283210005, ErrorMessage = "Select a Term.")]

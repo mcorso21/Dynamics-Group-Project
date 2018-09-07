@@ -42,11 +42,11 @@ namespace Dynamics_Group_4_Project
             //DynamicsDB.CreateCase(caseModel);
 
             // Get Cases
-            var cases = DynamicsDB.GetCases(new Guid("05dab347-58b0-e811-a96d-000d3a1ca7d6"));
-            foreach (MortgageCaseModel c in cases)
-            {
-                Console.WriteLine($"title={c.Title} Desc={c.Description} Prio={c.Priority} mortgageId={c.MortgageId} mortgageName={c.MortgageName}");
-            }
+            //var cases = DynamicsDB.GetCases(new Guid("05dab347-58b0-e811-a96d-000d3a1ca7d6"));
+            //foreach (MortgageCaseModel c in cases)
+            //{
+            //    Console.WriteLine($"title={c.Title} Desc={c.Description} Prio={c.Priority} mortgageId={c.MortgageId} mortgageName={c.MortgageName}");
+            //}
 
 
             // Get Mortgage Payments
@@ -66,7 +66,7 @@ namespace Dynamics_Group_4_Project
             //}
 
 
-
+            DynamicsDB.Test();
 
             Console.ReadLine();
         }

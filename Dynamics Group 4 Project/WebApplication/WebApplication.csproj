@@ -234,6 +234,7 @@
     <Compile Include="Controllers\APIs\MortgageAprController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\SupportController.cs" />
     <Compile Include="Controllers\MortgageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -327,6 +328,13 @@
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
+    <Content Include="Views\Support\Article.cshtml" />
+    <Content Include="Views\Support\_Error.cshtml" />
+    <None Include="Views\Support\_IncidentView.cshtml" />
+    <None Include="Views\Support\_IncidentReport.cshtml" />
+    <None Include="Views\Support\_MakePayment.cshtml" />
+    <None Include="Views\Support\_MortgageApply.cshtml" />
+    <None Include="Views\Support\_MortgageView.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -379,6 +387,7 @@
     <Content Include="Views\Mortgage\Create - Copy.cshtml" />
     <Content Include="Views\Mortgage\NewMortgage.cshtml" />
     <Content Include="Views\Mortgage\MakePayment.cshtml" />
+    <Content Include="Views\Mortgage\Index - Copy %282%29.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
