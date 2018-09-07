@@ -34,6 +34,8 @@ namespace DataAccessLayer.Models
         public decimal MortgageAmount { get; set; }
         [Required]
         //[Range(283210000, 283210005, ErrorMessage = "Select a Term.")]
+        [Display(Name = "Apr")]
+        public decimal Apr { get; set; }
         [Display(Name = "Term (Years)")]
         public TermEnum MortgageTermInYears { get; set; }
         [Display(Name = "Approval Status")]

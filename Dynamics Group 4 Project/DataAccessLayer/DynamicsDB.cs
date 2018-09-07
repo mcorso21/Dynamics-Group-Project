@@ -202,7 +202,7 @@ namespace DataAccessLayer
                                 ? (TermEnum)Enum.Parse(typeof(TermEnum), ((OptionSetValue)item["rev_mortgageterm"]).Value.ToString())
                                 : TermEnum.Thirty,
                             MortgageNumber = (item.Contains("rev_mortgagenumber")) ? item["rev_mortgagenumber"].ToString() : "N/A",
-
+                            Apr = (item.Contains("rev_finalapr")) ? (decimal)item["rev_finalapr"] : 0
                         });
                     }
                 }

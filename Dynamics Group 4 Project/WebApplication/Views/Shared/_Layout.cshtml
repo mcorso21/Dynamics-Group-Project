@@ -9,7 +9,7 @@
 
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar-inverse navbar-fixed-top" style="height: 65px; background-color: rgb(121, 25, 165);">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -17,18 +17,18 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Contoso Mortgages", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Contoso Mortgages", "Index", "Home", new { area = "" }, new { @class = "navbar-brand", @style = "color: white;" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li>@Html.ActionLink("Report Incident", "CreateCase", "Mortgage")</li>
-                        <li>@Html.ActionLink("Apply for Mortgage", "NewMortgage", "Mortgage")</li>
-                        <li>@Html.ActionLink("My Account", "Index", "Mortgage")</li>
+                        <li>@Html.ActionLink("Report Incident", "CreateCase", "Mortgage", new { }, new { @style = "color: white;" })</li>
+                        <li>@Html.ActionLink("Apply for Mortgage", "NewMortgage", "Mortgage", new { }, new { @style = "color: white;" })</li>
+                        <li>@Html.ActionLink("My Account", "Index", "Mortgage", new { }, new { @style = "color: white;" })</li>
                     }
                     <li class="dropdown">
-                        <a class="btn btn-secondary dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="btn btn-secondary dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color:white;">
                             Support
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -44,7 +44,7 @@
             </div>
         </div>
     </div>
-    <div class="container body-content">
+    <div class="container body-content" style="width:80%;">
         @RenderBody()
         <hr />
         <footer>

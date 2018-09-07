@@ -85,6 +85,7 @@
         <th> Region </th>
         <th> State </th>
         <th> Amount </th>
+        <th> APR </th>
         <th> Term (Years) </th>
         <th> Status </th>
     </tr>
@@ -96,6 +97,7 @@
         <td> @m.Region </td>
         <td> @m.State </td>
         <td> $@Math.Round(m.MortgageAmount, 2) </td>
+        <td> @Math.Round((m.Apr * 100), 2)%  </td>
         <td> @m.MortgageTermInYears </td>
         <td> @m.Approval </td>
     </tr>

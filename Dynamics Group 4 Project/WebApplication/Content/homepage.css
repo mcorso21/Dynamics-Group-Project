@@ -1,0 +1,46 @@
+﻿body {
+}
+
+#myCarousel img {
+    margin: 0 auto;
+    width: 1280px;
+    height: 700px;
+}
+
+.carousel-caption {
+    top: 50%;
+    transform: translateY(-50%);
+    text-transform: uppercase;
+}
+
+.btncustom {
+    font-size: 16px;
+    color: white;
+    padding: 12px 22px;
+    background: orange;
+    border: 3px solid #FFF;
+}
+
+#icon {
+    max-width: 200px;
+    margin: 1% auto;
+}
+
+#connect {
+    width: 100%;
+    background-color: brown;
+    padding: 3%;
+    color: #FFF;
+}
+
+.fa {
+    padding: 30px;
+    font-size: 20px;
+    color: #FFF;
+}
+/*delete text and btn mobile verison*/
+@media (max-width: 600px) {
+    .carousel-caption {
+        display: none;
+    }
+}

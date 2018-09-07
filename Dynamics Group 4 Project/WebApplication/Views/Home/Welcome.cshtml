@@ -1,0 +1,55 @@
+﻿@{
+    Layout = "";
+}
+
+@section Scripts {
+    @Styles.Render("~/Content/welcome.css")
+
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="~/Content/welcome.css" rel="stylesheet" />
+    <script src="http://code.jquery.com/jquery-3.2.1.js"></script>
+    <title>GOAT| Welcome</title>
+</head>
+<body>
+    <div class="wrapper">
+        <img src="http://res.cloudinary.com/canadian-feed-the-children/image/upload/w_auto,q_auto:eco,f_auto,dpr_auto,fl_progressive,c_fit/v1509385051/goat-single_vdyrjy.png" alt="W3Schools.com">
+    </div>
+    <div class="welcome hidden">
+        <div class="wrap">
+            <ul class="flytext">
+                <li>G</li>
+                <li>O</li>
+                <li>A</li>
+                <li>T</li>
+            </ul>
+            <a href="#" class="enterbtn">ENTER</a>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(function () {
+            var welcomeText = $('.welcome'),
+                enterButton = welcomeText.find('.enterbtn');
+            //goLink = $('.welcome a')
+            //The speed for the text to appear
+            setTimeout(function () {
+                welcomeText.removeClass('hidden');
+            }, 300);
+            //Fades (removes) my "hidden" class which hides the "wrapper" class
+            enterButton.on('click', function () {
+                welcomeText.addClass('hidden').fadeOut();
+                setTimeout(function () {
+                    $(location).attr('href', 'Index')
+                }, 300);
+                //e.preventDefault()
+                //welcomeText.addClass('hidden').fadeOut();
+            });
+        });
+    </script>
+</body>
+</html>
