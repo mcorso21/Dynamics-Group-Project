@@ -60,6 +60,15 @@ namespace DataAccessLayer
                                     .Select(grp => grp.ToList())
                                     .ToList().OrderBy(c => c.Count());
 
+                    //var t1 = cases.GroupBy(u => u["ownerid"]);
+
+                    //var t2 = t1.Select(grp => grp.ToList());
+
+                    //var t3 = t2.ToList();
+                    
+                    //var t4 = t3.OrderBy(c => c.Count());
+
+
                     foreach (var c in casesByOwner)
                     {
                         if (associates.Any(a => a.UserId.Equals(((EntityReference)c[0]["ownerid"]).Id)))

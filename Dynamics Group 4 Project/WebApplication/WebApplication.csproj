@@ -281,14 +281,17 @@
     </Content>
     <Content Include="Images\827843530-612x612.jpg" />
     <Content Include="Images\conventional-versus-high-ratio-mortgage.jpg" />
+    <Content Include="Images\Dontae.JPG" />
     <Content Include="Images\downloadwww.jpg" />
+    <Content Include="Images\Eric.jpg" />
     <Content Include="Images\images %281%29.jpg" />
     <Content Include="Images\images %282%29.jpg" />
     <Content Include="Images\images.jpg" />
-    <Content Include="Images\IMG_0443.JPG" />
     <Content Include="Images\JXW4ZGMTMFCSRCDGLP2UN5HTM4.jpg" />
+    <Content Include="Images\Kevin.jpg" />
     <Content Include="Images\mike.jpg" />
     <Content Include="Images\mortgage-landing-page-design-1.jpg" />
+    <Content Include="Images\YuYuan.jpeg" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
