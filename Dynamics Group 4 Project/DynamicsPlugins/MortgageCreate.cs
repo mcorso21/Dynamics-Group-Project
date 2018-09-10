@@ -80,6 +80,7 @@ namespace DynamicsPlugins
 
                     mortgage.Attributes.Add("rev_finalapr", APR);
                     mortgage.Attributes.Add("rev_mortgagepayment", MonthlyPayment);
+                    mortgage.Attributes.Add("rev_riskscore", (int)RiskScore);
                 }
 
                 catch (FaultException<OrganizationServiceFault> ex)
